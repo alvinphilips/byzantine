@@ -1,0 +1,129 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Anchor ⚓ is a framework for Solana’s Sealevel runtime providing several convenient developer tools."><meta name="keywords" content="rust, rustlang, rust-lang, anchor_lang"><title>anchor_lang - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../normalize.css"><link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../dark.css" disabled><link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../storage.js"></script><script defer src="../crates.js"></script><script defer src="../main.js"></script><noscript><link rel="stylesheet" href="../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../favicon.svg"></head><body class="rustdoc mod crate"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../anchor_lang/index.html"><div class="logo-container"><img class="rust-logo" src="../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../anchor_lang/index.html"><div class="logo-container"><img class="rust-logo" src="../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"><a href="#">Crate anchor_lang</a></h2><div class="sidebar-elems"><div class="block"><ul><li class="version">Version 0.25.0</li><li><a id="all-types" href="all.html">All Items</a></li></ul></div><section><div class="block"><ul><li><a href="#reexports">Re-exports</a></li><li><a href="#modules">Modules</a></li><li><a href="#macros">Macros</a></li><li><a href="#structs">Structs</a></li><li><a href="#traits">Traits</a></li><li><a href="#types">Type Definitions</a></li><li><a href="#attributes">Attribute Macros</a></li><li><a href="#derives">Derive Macros</a></li></ul></div></section></div></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../anchor_lang/index.html"><img class="rust-logo" src="../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
+                                <a href="../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../wheel.svg"></a></div>
+                        </div></form></nav></div><section id="main-content" class="content"><div class="main-heading">
+    <h1 class="fqn"><span class="in-band">Crate <a class="mod" href="#">anchor_lang</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../clipboard.svg" width="19" height="18" alt="Copy item path"></button></span></h1><span class="out-of-band"><a class="srclink" href="../src/anchor_lang/lib.rs.html#1-581">source</a> · <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span></div><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Anchor ⚓ is a framework for Solana’s Sealevel runtime providing several
+convenient developer tools.</p>
+<ul>
+<li>Rust eDSL for writing safe, secure, and high level Solana programs</li>
+<li><a href="https://en.wikipedia.org/wiki/Interface_description_language">IDL</a> specification</li>
+<li>TypeScript package for generating clients from IDL</li>
+<li>CLI and workspace management for developing complete applications</li>
+</ul>
+<p>If you’re familiar with developing in Ethereum’s
+<a href="https://docs.soliditylang.org/en/v0.7.4/">Solidity</a>,
+<a href="https://www.trufflesuite.com/">Truffle</a>,
+<a href="https://github.com/ethereum/web3.js">web3.js</a> or Parity’s
+<a href="https://github.com/paritytech/ink">Ink!</a>, then the experience will be
+familiar. Although the syntax and semantics are targeted at Solana, the high
+level workflow of writing RPC request handlers, emitting an IDL, and
+generating clients from IDL is the same.</p>
+<p>For detailed tutorials and examples on how to use Anchor, see the guided
+<a href="https://coral-xyz.github.io/anchor">tutorials</a> or examples in the GitHub
+<a href="https://github.com/coral-xyz/anchor">repository</a>.</p>
+<p>Presented here are the Rust primitives for building on Solana.</p>
+</div></details><h2 id="reexports" class="small-section-header"><a href="#reexports">Re-exports</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left import-item" id="reexport.solana_program"><code>pub use <a class="mod" href="../solana_program/index.html" title="mod solana_program">solana_program</a>;</code></div><div class="item-right docblock-short"></div></div></div><h2 id="modules" class="small-section-header"><a href="#modules">Modules</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="mod" href="accounts/index.html" title="anchor_lang::accounts mod">accounts</a></div><div class="item-right docblock-short"><p>Account types that can be used in the account validation struct.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="context/index.html" title="anchor_lang::context mod">context</a></div><div class="item-right docblock-short"><p>Data structures that are used to provide non-argument inputs to program endpoints</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="error/index.html" title="anchor_lang::error mod">error</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="prelude/index.html" title="anchor_lang::prelude mod">prelude</a></div><div class="item-right docblock-short"><p>The prelude contains all commonly used components of the crate.
+All programs should include it via <code>anchor_lang::prelude::*;</code>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="system_program/index.html" title="anchor_lang::system_program mod">system_program</a></div><div class="item-right docblock-short"></div></div></div><h2 id="macros" class="small-section-header"><a href="#macros">Macros</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.declare_id.html" title="anchor_lang::declare_id macro">declare_id</a></div><div class="item-right docblock-short"><p>Defines the program’s ID. This should be used at the root of all Anchor
+based programs.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.emit.html" title="anchor_lang::emit macro">emit</a></div><div class="item-right docblock-short"><p>Logs an event that can be subscribed to by clients.
+Uses the <a href="https://docs.rs/solana-program/latest/solana_program/log/fn.sol_log_data.html"><code>sol_log_data</code></a>
+syscall which results in the following log:</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.err.html" title="anchor_lang::err macro">err</a></div><div class="item-right docblock-short"><p>Returns with the given error.
+Use this with a custom error type.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.error.html" title="anchor_lang::error macro">error</a></div><div class="item-right docblock-short"><p>Generates an <a href="../../anchor_lang/error/enum.Error.html"><code>Error::AnchorError</code></a> that includes file and line information.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.require.html" title="anchor_lang::require macro">require</a></div><div class="item-right docblock-short"><p>Ensures a condition is true, otherwise returns with the given error.
+Use this with or without a custom error type.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.require_eq.html" title="anchor_lang::require_eq macro">require_eq</a></div><div class="item-right docblock-short"><p>Ensures two NON-PUBKEY values are equal.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.require_gt.html" title="anchor_lang::require_gt macro">require_gt</a></div><div class="item-right docblock-short"><p>Ensures the first NON-PUBKEY value is greater than the second
+NON-PUBKEY value.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.require_gte.html" title="anchor_lang::require_gte macro">require_gte</a></div><div class="item-right docblock-short"><p>Ensures the first NON-PUBKEY value is greater than or equal
+to the second NON-PUBKEY value.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.require_keys_eq.html" title="anchor_lang::require_keys_eq macro">require_keys_eq</a></div><div class="item-right docblock-short"><p>Ensures two pubkeys values are equal.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.require_keys_neq.html" title="anchor_lang::require_keys_neq macro">require_keys_neq</a></div><div class="item-right docblock-short"><p>Ensures two pubkeys are not equal.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.require_neq.html" title="anchor_lang::require_neq macro">require_neq</a></div><div class="item-right docblock-short"><p>Ensures two NON-PUBKEY values are not equal.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.source.html" title="anchor_lang::source macro">source</a></div><div class="item-right docblock-short"><p>Creates a <a href="error/struct.Source.html"><code>Source</code></a></p>
+</div></div></div><h2 id="structs" class="small-section-header"><a href="#structs">Structs</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.ProgramData.html" title="anchor_lang::ProgramData struct">ProgramData</a></div><div class="item-right docblock-short"></div></div></div><h2 id="traits" class="small-section-header"><a href="#traits">Traits</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.AccountDeserialize.html" title="anchor_lang::AccountDeserialize trait">AccountDeserialize</a></div><div class="item-right docblock-short"><p>A data structure that can be deserialized and stored into account storage,
+i.e. an
+<a href="../solana_program/account_info/struct.AccountInfo.html#structfield.data"><code>AccountInfo</code></a>’s
+mutable data slice.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.AccountSerialize.html" title="anchor_lang::AccountSerialize trait">AccountSerialize</a></div><div class="item-right docblock-short"><p>A data structure that can be serialized and stored into account storage,
+i.e. an
+<a href="../solana_program/account_info/struct.AccountInfo.html#structfield.data"><code>AccountInfo</code></a>’s
+mutable data slice.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.Accounts.html" title="anchor_lang::Accounts trait">Accounts</a></div><div class="item-right docblock-short"><p>A data structure of validated accounts that can be deserialized from the
+input to a Solana program. Implementations of this trait should perform any
+and all requisite constraint checks on accounts to ensure the accounts
+maintain any invariants required for the program to run securely. In most
+cases, it’s recommended to use the <a href="./derive.Accounts.html"><code>Accounts</code></a>
+derive macro to implement this trait.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.AccountsClose.html" title="anchor_lang::AccountsClose trait">AccountsClose</a></div><div class="item-right docblock-short"><p>The close procedure to initiate garabage collection of an account, allowing
+one to retrieve the rent exemption.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.AccountsExit.html" title="anchor_lang::AccountsExit trait">AccountsExit</a></div><div class="item-right docblock-short"><p>The exit procedure for an account. Any cleanup or persistence to storage
+should be done here.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.AnchorDeserialize.html" title="anchor_lang::AnchorDeserialize trait">AnchorDeserialize</a></div><div class="item-right docblock-short"><p>Borsh is the default serialization format for instructions and accounts.
+A data-structure that can be de-serialized from binary format by NBOR.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.AnchorSerialize.html" title="anchor_lang::AnchorSerialize trait">AnchorSerialize</a></div><div class="item-right docblock-short"><p>Borsh is the default serialization format for instructions and accounts.
+A data-structure that can be serialized into binary format by NBOR.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.Bump.html" title="anchor_lang::Bump trait">Bump</a></div><div class="item-right docblock-short"><p>Bump seed for program derived addresses.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.Discriminator.html" title="anchor_lang::Discriminator trait">Discriminator</a></div><div class="item-right docblock-short"><p>8 byte unique identifier for a type.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.Event.html" title="anchor_lang::Event trait">Event</a></div><div class="item-right docblock-short"><p>An event that can be emitted via a Solana log. See <a href="macro.emit.html"><code>emit!</code></a> for an example.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.Id.html" title="anchor_lang::Id trait">Id</a></div><div class="item-right docblock-short"><p>Defines the id of a program.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.InstructionData.html" title="anchor_lang::InstructionData trait">InstructionData</a></div><div class="item-right docblock-short"><p>Calculates the data for an instruction invocation, where the data is
+<code>Sha256(&lt;namespace&gt;:&lt;method_name&gt;)[..8] || BorshSerialize(args)</code>.
+<code>args</code> is a borsh serialized struct of named fields for each argument given
+to an instruction.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.Key.html" title="anchor_lang::Key trait">Key</a></div><div class="item-right docblock-short"><p>Defines the Pubkey of an account.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.Owner.html" title="anchor_lang::Owner trait">Owner</a></div><div class="item-right docblock-short"><p>Defines an address expected to own an account.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.ToAccountInfo.html" title="anchor_lang::ToAccountInfo trait">ToAccountInfo</a></div><div class="item-right docblock-short"><p>Transformation to an <code>AccountInfo</code> struct.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.ToAccountInfos.html" title="anchor_lang::ToAccountInfos trait">ToAccountInfos</a></div><div class="item-right docblock-short"><p>Transformation to
+<a href="../solana_program/account_info/struct.AccountInfo.html"><code>AccountInfo</code></a>
+structs.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.ToAccountMetas.html" title="anchor_lang::ToAccountMetas trait">ToAccountMetas</a></div><div class="item-right docblock-short"><p>Transformation to
+<a href="../solana_program/instruction/struct.AccountMeta.html"><code>AccountMeta</code></a>
+structs.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.ZeroCopy.html" title="anchor_lang::ZeroCopy trait">ZeroCopy</a></div><div class="item-right docblock-short"><p>An account data structure capable of zero copy deserialization.</p>
+</div></div></div><h2 id="types" class="small-section-header"><a href="#types">Type Definitions</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="type" href="type.Result.html" title="anchor_lang::Result type">Result</a></div><div class="item-right docblock-short"></div></div></div><h2 id="attributes" class="small-section-header"><a href="#attributes">Attribute Macros</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="attr" href="attr.access_control.html" title="anchor_lang::access_control attr">access_control</a></div><div class="item-right docblock-short"><p>Executes the given access control method before running the decorated
+instruction handler. Any method in scope of the attribute can be invoked
+with any arguments from the associated instruction handler.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="attr" href="attr.account.html" title="anchor_lang::account attr">account</a></div><div class="item-right docblock-short"><p>An attribute for a data structure representing a Solana account.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="attr" href="attr.constant.html" title="anchor_lang::constant attr">constant</a></div><div class="item-right docblock-short"><p>A marker attribute used to mark const values that should be included in the
+generated IDL but functionally does nothing.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="attr" href="attr.error_code.html" title="anchor_lang::error_code attr">error_code</a></div><div class="item-right docblock-short"><p>Generates <code>Error</code> and <code>type Result&lt;T&gt; = Result&lt;T, Error&gt;</code> types to be
+used as return types from Anchor instruction handlers. Importantly, the
+attribute implements
+<a href="https://doc.rust-lang.org/std/convert/trait.From.html"><code>From</code></a> on the
+<code>ErrorCode</code> to support converting from the user defined error enum <em>into</em>
+the generated <code>Error</code>.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="attr" href="attr.event.html" title="anchor_lang::event attr">event</a></div><div class="item-right docblock-short"><p>The event attribute allows a struct to be used with
+<a href="./macro.emit.html">emit!</a> so that programs can log significant events in
+their programs that clients can subscribe to. Currently, this macro is for
+structs only.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="attr" href="attr.interface.html" title="anchor_lang::interface attr">interface</a></div><div class="item-right docblock-short"><p>The <code>#[interface]</code> attribute allows one to define an external program
+dependency, without having any knowledge about the program, other than
+the fact that it implements the given trait.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="attr" href="attr.program.html" title="anchor_lang::program attr">program</a></div><div class="item-right docblock-short"><p>The <code>#[program]</code> attribute defines the module containing all instruction
+handlers defining all entries into a Solana program.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="attr" href="attr.state.html" title="anchor_lang::state attr">state</a></div><div class="item-right docblock-short"><p>The <code>#[state]</code> attribute defines the program’s state struct, i.e., the
+program’s global account singleton giving the program the illusion of state.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="attr" href="attr.zero_copy.html" title="anchor_lang::zero_copy attr">zero_copy</a></div><div class="item-right docblock-short"><p>A data structure that can be used as an internal field for a zero copy
+deserialized account, i.e., a struct marked with <code>#[account(zero_copy)]</code>.</p>
+</div></div></div><h2 id="derives" class="small-section-header"><a href="#derives">Derive Macros</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="derive" href="derive.Accounts.html" title="anchor_lang::Accounts derive">Accounts</a></div><div class="item-right docblock-short"><p>Implements an <a href="./trait.Accounts.html"><code>Accounts</code></a> deserializer on the given
+struct. Can provide further functionality through the use of attributes.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="derive" href="derive.AnchorDeserialize.html" title="anchor_lang::AnchorDeserialize derive">AnchorDeserialize</a></div><div class="item-right docblock-short"><p>Borsh is the default serialization format for instructions and accounts.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="derive" href="derive.AnchorSerialize.html" title="anchor_lang::AnchorSerialize derive">AnchorSerialize</a></div><div class="item-right docblock-short"><p>Borsh is the default serialization format for instructions and accounts.</p>
+</div></div></div></section></div></main><div id="rustdoc-vars" data-root-path="../" data-current-crate="anchor_lang" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0 (4b91a6ea7 2022-08-08)" ></div>
+</body></html>

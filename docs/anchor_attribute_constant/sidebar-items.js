@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"attr":[["constant","A marker attribute used to mark const values that should be included in the generated IDL but functionally does nothing."]]};

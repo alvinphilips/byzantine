@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":[["UncheckedAccount","Explicit wrapper for AccountInfo types to emphasize that no checks are performed"]]};

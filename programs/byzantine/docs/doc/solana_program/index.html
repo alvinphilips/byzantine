@@ -1,0 +1,497 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="The base library for all Solana on-chain Rust programs."><meta name="keywords" content="rust, rustlang, rust-lang, solana_program"><title>solana_program - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../normalize.css"><link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../dark.css" disabled><link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../storage.js"></script><script defer src="../crates.js"></script><script defer src="../main.js"></script><noscript><link rel="stylesheet" href="../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../favicon.svg"></head><body class="rustdoc mod crate"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../solana_program/index.html"><div class="logo-container"><img class="rust-logo" src="../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../solana_program/index.html"><div class="logo-container"><img class="rust-logo" src="../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"><a href="#">Crate solana_program</a></h2><div class="sidebar-elems"><div class="block"><ul><li class="version">Version 1.10.39</li><li><a id="all-types" href="all.html">All Items</a></li></ul></div><section><div class="block"><ul><li><a href="#modules">Modules</a></li><li><a href="#macros">Macros</a></li><li><a href="#functions">Functions</a></li><li><a href="#attributes">Attribute Macros</a></li></ul></div></section></div></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../solana_program/index.html"><img class="rust-logo" src="../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
+                                <a href="../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../wheel.svg"></a></div>
+                        </div></form></nav></div><section id="main-content" class="content"><div class="main-heading">
+    <h1 class="fqn"><span class="in-band">Crate <a class="mod" href="#">solana_program</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../clipboard.svg" width="19" height="18" alt="Copy item path"></button></span></h1><span class="out-of-band"><a class="srclink" href="../src/solana_program/lib.rs.html#1-824">source</a> · <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span></div><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>The base library for all Solana on-chain Rust programs.</p>
+<p>All Solana Rust programs that run on-chain will link to this crate, which
+acts as a standard library for Solana programs. Solana programs also link to
+the <a href="https://doc.rust-lang.org/stable/std/">Rust standard library</a>, though it is <a href="https://docs.solana.com/developing/on-chain-programs/developing-rust#restrictions">modified</a> for the
+Solana runtime environment. While off-chain programs that interact with the
+Solana network <em>can</em> link to this crate, they typically instead use the
+<a href="https://docs.rs/solana-sdk/latest/solana_sdk/"><code>solana-sdk</code></a> crate, which reexports all modules from <code>solana-program</code>.</p>
+<p>This library defines</p>
+<ul>
+<li>macros for declaring the <a href="#defining-a-solana-program">program entrypoint</a>,</li>
+<li><a href="#core-data-types">core data types</a>,</li>
+<li><a href="log/index.html">logging</a> macros,</li>
+<li><a href="#serialization">serialization</a> methods,</li>
+<li>methods for <a href="#cross-program-instruction-execution">cross-program instruction execution</a>,</li>
+<li>program IDs and instruction constructors for the system program and other
+<a href="#native-programs">native programs</a>,</li>
+<li><a href="#sysvars">sysvar</a> accessors.</li>
+</ul>
+<p>Idiomatic examples of <code>solana-program</code> usage can be found in
+<a href="https://github.com/solana-labs/solana-program-library">the Solana Program Library</a>.</p>
+<h2 id="defining-a-solana-program"><a href="#defining-a-solana-program">Defining a solana program</a></h2>
+<p>Solana program crates have some unique properties compared to typical Rust
+programs:</p>
+<ul>
+<li>They are often compiled for both on-chain use and off-chain use. This is
+primarily because off-chain clients may need access to data types
+defined by the on-chain program.</li>
+<li>They do not define a <code>main</code> function, but instead define their entrypoint
+with the <a href="macro.entrypoint.html" title="entrypoint!"><code>entrypoint!</code></a> macro.</li>
+<li>They are compiled as the <a href="https://doc.rust-lang.org/reference/linkage.html">“cdylib”</a> crate type for dynamic loading
+by the Solana runtime.</li>
+<li>They run in a constrained VM environment, and while they do have access to
+the <a href="https://doc.rust-lang.org/stable/std/">Rust standard library</a>, many features of the standard library,
+particularly related to OS services, will fail at runtime, will silently
+do nothing, or are not defined. See the <a href="https://docs.solana.com/developing/on-chain-programs/developing-rust#restrictions">restrictions to the Rust standard
+library</a> in the Solana documentation for more.</li>
+</ul>
+<p>Because multiple crates that are linked together cannot all define
+program entrypoints (see the <a href="macro.entrypoint.html" title="entrypoint!"><code>entrypoint!</code></a> documentation) a common
+convention is to use a <a href="https://doc.rust-lang.org/cargo/reference/features.html">Cargo feature</a> called <code>no-entrypoint</code> to allow
+the program entrypoint to be disabled.</p>
+<p>The skeleton of a Solana program typically looks like:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;no-entrypoint&quot;</span>))]</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">entrypoint</span> {
+    <span class="kw">use</span> <span class="ident">solana_program</span>::{
+        <span class="ident">account_info::AccountInfo</span>,
+        <span class="ident">entrypoint</span>,
+        <span class="ident">entrypoint::ProgramResult</span>,
+        <span class="ident">pubkey::Pubkey</span>,
+    };
+
+    <span class="macro">entrypoint!</span>(<span class="ident">process_instruction</span>);
+
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">process_instruction</span>(
+        <span class="ident">program_id</span>: <span class="kw-2">&amp;</span><span class="ident">Pubkey</span>,
+        <span class="ident">accounts</span>: <span class="kw-2">&amp;</span>[<span class="ident">AccountInfo</span>],
+        <span class="ident">instruction_data</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],
+    ) -&gt; <span class="ident">ProgramResult</span> {
+        <span class="comment">// Decode and dispatch instructions here.</span>
+        <span class="macro">todo!</span>()
+    }
+}
+
+<span class="comment">// Additional code goes here.</span></code></pre></div>
+<p>With a <code>Cargo.toml</code> file that contains</p>
+<div class="example-wrap"><pre class="language-toml"><code>[lib]
+crate-type = [&quot;cdylib&quot;, &quot;rlib&quot;]
+
+[features]
+no-entrypoint = []</code></pre></div>
+<p>Note that a Solana program must specify its crate-type as “cdylib”, and
+“cdylib” crates will automatically be discovered and built by the <code>cargo build-bpf</code> command. Solana programs also often have crate-type “rlib” so
+they can be linked to other Rust crates.</p>
+<h2 id="on-chain-vs-off-chain-compilation-targets"><a href="#on-chain-vs-off-chain-compilation-targets">On-chain vs. off-chain compilation targets</a></h2>
+<p>Solana programs run on the <a href="https://github.com/solana-labs/rbpf">rbpf</a> VM, which implements a variant of the
+<a href="https://ebpf.io/">eBPF</a> instruction set. Because this crate can be compiled for both on-chain
+and off-chain execution, the environments of which are significantly
+different, it extensively uses <a href="https://doc.rust-lang.org/reference/conditional-compilation.html">conditional compilation</a> to tailor its
+implementation to the environment. The <code>cfg</code> predicate used for identifying
+compilation for on-chain programs is <code>target_arch = &quot;bpf&quot;</code>, as in this
+example from the <code>solana-program</code> codebase that logs a message via a
+syscall when run on-chain, and via a library call when offchain:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sol_log</span>(<span class="ident">message</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) {
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;bpf&quot;</span>)]</span>
+    <span class="kw">unsafe</span> {
+        <span class="ident">sol_log_</span>(<span class="ident">message</span>.<span class="ident">as_ptr</span>(), <span class="ident">message</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u64</span>);
+    }
+
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;bpf&quot;</span>))]</span>
+    <span class="ident">program_stubs::sol_log</span>(<span class="ident">message</span>);
+}</code></pre></div>
+<p>This <code>cfg</code> pattern is suitable as well for user code that needs to work both
+on-chain and off-chain.</p>
+<p><code>solana-program</code> and <code>solana-sdk</code> were previously a single crate. Because of
+this history, and because of the dual-usage of <code>solana-program</code> for two
+different environments, it contains some features that are not available to
+on-chain programs at compile-time. It also contains some on-chain features
+that will fail in off-chain scenarios at runtime. This distinction is not
+well-reflected in the documentation.</p>
+<p>For a more complete description of Solana’s implementation of eBPF and its
+limitations, see the main Solana documentation for <a href="https://docs.solana.com/developing/on-chain-programs/overview">on-chain programs</a>.</p>
+<h2 id="core-data-types"><a href="#core-data-types">Core data types</a></h2>
+<ul>
+<li><a href="pubkey/struct.Pubkey.html"><code>Pubkey</code></a> — The address of a <a href="https://docs.solana.com/developing/programming-model/accounts">Solana account</a>. Some account
+addresses are <a href="https://ed25519.cr.yp.to/">ed25519</a> public keys, with corresponding secret keys that
+are managed off-chain. Often though account addresses do not have
+corresponding secret keys, as with <a href="https://docs.solana.com/developing/programming-model/calling-between-programs#program-derived-addresses"><em>program derived addresses</em></a>, or
+the secret key is not relevant to the operation of a program, and may have
+even been disposed of. As running Solana programs can not safely create or
+manage secret keys, the full <a href="https://docs.rs/solana-sdk/latest/solana_sdk/signer/keypair/struct.Keypair.html"><code>Keypair</code></a> is not defined in
+<code>solana-program</code> but in <code>solana-sdk</code>.</li>
+<li><a href="hash/struct.Hash.html"><code>Hash</code></a> — A <a href="https://en.wikipedia.org/wiki/SHA-2">SHA-256</a> hash. Used to uniquely identify blocks, and
+also for general purpose hashing.</li>
+<li><a href="account_info/struct.AccountInfo.html"><code>AccountInfo</code></a> — A description of a single Solana account. All accounts
+that might be accessed by a program invocation are provided to the program
+entrypoint as <code>AccountInfo</code>.</li>
+<li><a href="instruction/struct.Instruction.html"><code>Instruction</code></a> — A directive telling the runtime to execute a program,
+passing it a set of accounts and program-specific data.</li>
+<li><a href="program_error/enum.ProgramError.html"><code>ProgramError</code></a> and <a href="entrypoint/type.ProgramResult.html"><code>ProgramResult</code></a> — The error type that all programs
+must return, reported to the runtime as a <code>u64</code>.</li>
+<li><a href="native_token/struct.Sol.html"><code>Sol</code></a> — The Solana native token type, with conversions to and from
+<a href="https://docs.solana.com/introduction#what-are-sols"><em>lamports</em></a>, the smallest fractional unit of SOL, in the <a href="native_token/index.html" title="native_token"><code>native_token</code></a>
+module.</li>
+</ul>
+<h2 id="serialization"><a href="#serialization">Serialization</a></h2>
+<p>Within the Solana runtime, programs, and network, at least three different
+serialization formats are used, and <code>solana-program</code> provides access to
+those needed by programs.</p>
+<p>In user-written Solana program code, serialization is primarily used for
+accessing <a href="account_info/struct.AccountInfo.html"><code>AccountInfo</code></a> data and <a href="instruction/struct.Instruction.html"><code>Instruction</code></a> data, both of which are
+program-specific binary data. Every program is free to decide their own
+serialization format, but data recieved from other sources —
+<a href="#sysvars">sysvars</a> for example — must be deserialized using the methods
+indicated by the documentation for that data or data type.</p>
+<p>The three serialization formats in use in Solana are:</p>
+<ul>
+<li>
+<p><strong><a href="https://borsh.io/">Borsh</a></strong>, a compact and well-specified format developed by the <a href="https://near.org/">NEAR</a>
+project, suitable for use in protocol definitions and for archival storage.
+It has a <a href="https://docs.rs/borsh">Rust implementation</a> and a <a href="https://github.com/near/borsh-js">JavaScript implementation</a>
+and is recommended for all purposes.</p>
+<p>Users need to import the <a href="https://docs.rs/borsh"><code>borsh</code></a> crate themselves — it is not
+re-exported by <code>solana-program</code>, though this crate provides several useful
+utilities in its <a href="borsh/index.html"><code>borsh</code> module</a> that are not available in the
+<code>borsh</code> library.</p>
+<p>The <a href="instruction/struct.Instruction.html#method.new_with_borsh"><code>Instruction::new_with_borsh</code></a> function creates an <code>Instruction</code> by
+serializing a value with borsh.</p>
+</li>
+<li>
+<p><strong><a href="https://docs.rs/bincode">Bincode</a></strong>, a compact serialization format that implements the <a href="https://serde.rs/">Serde</a>
+Rust APIs. As it does not have a specification nor a JavaScript
+implementation, and uses more CPU than borsh, it is not recommend for new
+code.</p>
+<p>Many system program and native program instructions are serialized with
+bincode, and it is used for other purposes in the runtime. In these cases
+Rust programmers are generally not directly exposed to the encoding format
+as it is hidden behind APIs.</p>
+<p>The <a href="instruction/struct.Instruction.html#method.new_with_bincode"><code>Instruction::new_with_bincode</code></a> function creates an <code>Instruction</code> by
+serializing a value with bincode.</p>
+</li>
+<li>
+<p><strong><a href="program_pack/trait.Pack.html"><code>Pack</code></a></strong>, a Solana-specific serialization API that is used by many
+older programs in the <a href="https://github.com/solana-labs/solana-program-library">Solana Program Library</a> to define their
+account format. It is difficult to implement and does not define a
+language-independent serialization format. It is not generally recommended
+for new code.</p>
+</li>
+</ul>
+<p>Developers should carefully consider the CPU cost of serialization, balanced
+against the need for correctness and ease of use: off-the-shelf
+serialization formats tend to be more expensive than carefully hand-written
+application-specific formats; but application-specific formats are more
+difficult to ensure the correctness of, and to provide multi-language
+implementations for. It is not uncommon for programs to pack and unpack
+their data with hand-written code.</p>
+<h2 id="cross-program-instruction-execution"><a href="#cross-program-instruction-execution">Cross-program instruction execution</a></h2>
+<p>Solana programs may call other programs, termed <a href="#cross-program-instruction-execution"><em>cross-program
+invocation</em></a> (CPI), with the <a href="program/fn.invoke.html"><code>invoke</code></a> and <a href="program/fn.invoke_signed.html"><code>invoke_signed</code></a>
+functions. When calling another program the caller must provide the
+<a href="instruction/struct.Instruction.html"><code>Instruction</code></a> to be invoked, as well as the <a href="account_info/struct.AccountInfo.html"><code>AccountInfo</code></a> for every
+account required by the instruction. Because the only way for a program to
+acquire <code>AccountInfo</code> values is by receiving them from the runtime at the
+<a href="macro.entrypoint.html" title="entrypoint!">program entrypoint</a>, any account required by the callee
+program must transitively be required by the caller program, and provided by
+<em>its</em> caller.</p>
+<p>A simple example of transferring lamports via CPI:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use</span> <span class="ident">solana_program</span>::{
+    <span class="ident">account_info</span>::{<span class="ident">next_account_info</span>, <span class="ident">AccountInfo</span>},
+    <span class="ident">entrypoint</span>,
+    <span class="ident">entrypoint::ProgramResult</span>,
+    <span class="ident">program::invoke</span>,
+    <span class="ident">pubkey::Pubkey</span>,
+    <span class="ident">system_instruction</span>,
+    <span class="ident">system_program</span>,
+};
+
+<span class="macro">entrypoint!</span>(<span class="ident">process_instruction</span>);
+
+<span class="kw">fn</span> <span class="ident">process_instruction</span>(
+    <span class="ident">program_id</span>: <span class="kw-2">&amp;</span><span class="ident">Pubkey</span>,
+    <span class="ident">accounts</span>: <span class="kw-2">&amp;</span>[<span class="ident">AccountInfo</span>],
+    <span class="ident">instruction_data</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],
+) -&gt; <span class="ident">ProgramResult</span> {
+    <span class="kw">let</span> <span class="ident">account_info_iter</span> <span class="op">=</span> <span class="kw-2">&amp;mut</span> <span class="ident">accounts</span>.<span class="ident">iter</span>();
+
+    <span class="kw">let</span> <span class="ident">payer</span> <span class="op">=</span> <span class="ident">next_account_info</span>(<span class="ident">account_info_iter</span>)<span class="question-mark">?</span>;
+    <span class="kw">let</span> <span class="ident">recipient</span> <span class="op">=</span> <span class="ident">next_account_info</span>(<span class="ident">account_info_iter</span>)<span class="question-mark">?</span>;
+    <span class="comment">// The system program is a required account to invoke a system</span>
+    <span class="comment">// instruction, even though we don&#39;t use it directly.</span>
+    <span class="kw">let</span> <span class="ident">system_account</span> <span class="op">=</span> <span class="ident">next_account_info</span>(<span class="ident">account_info_iter</span>)<span class="question-mark">?</span>;
+
+    <span class="macro">assert!</span>(<span class="ident">payer</span>.<span class="ident">is_writable</span>);
+    <span class="macro">assert!</span>(<span class="ident">payer</span>.<span class="ident">is_signer</span>);
+    <span class="macro">assert!</span>(<span class="ident">recipient</span>.<span class="ident">is_writable</span>);
+    <span class="macro">assert!</span>(<span class="ident">system_program::check_id</span>(<span class="ident">system_account</span>.<span class="ident">key</span>));
+
+    <span class="kw">let</span> <span class="ident">lamports</span> <span class="op">=</span> <span class="number">1000000</span>;
+
+    <span class="ident">invoke</span>(
+        <span class="kw-2">&amp;</span><span class="ident">system_instruction::transfer</span>(<span class="ident">payer</span>.<span class="ident">key</span>, <span class="ident">recipient</span>.<span class="ident">key</span>, <span class="ident">lamports</span>),
+        <span class="kw-2">&amp;</span>[<span class="ident">payer</span>.<span class="ident">clone</span>(), <span class="ident">recipient</span>.<span class="ident">clone</span>(), <span class="ident">system_account</span>.<span class="ident">clone</span>()],
+    )
+}</code></pre></div>
+<p>Solana also includes a mechinasm to let programs control and sign for
+accounts without needing to protect a corresponding secret key, called
+<a href="https://docs.solana.com/developing/programming-model/calling-between-programs#program-derived-addresses"><em>program derived addresses</em></a>. PDAs are derived with the
+<a href="pubkey/struct.Pubkey.html#method.find_program_address"><code>Pubkey::find_program_address</code></a> function. With a PDA, a program can call
+<code>invoke_signed</code> to call another program while virtually “signing” for the
+PDA.</p>
+<p>A simple example of creating an account for a PDA:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use</span> <span class="ident">solana_program</span>::{
+    <span class="ident">account_info</span>::{<span class="ident">next_account_info</span>, <span class="ident">AccountInfo</span>},
+    <span class="ident">entrypoint</span>,
+    <span class="ident">entrypoint::ProgramResult</span>,
+    <span class="ident">program::invoke_signed</span>,
+    <span class="ident">pubkey::Pubkey</span>,
+    <span class="ident">system_instruction</span>,
+    <span class="ident">system_program</span>,
+};
+
+<span class="macro">entrypoint!</span>(<span class="ident">process_instruction</span>);
+
+<span class="kw">fn</span> <span class="ident">process_instruction</span>(
+    <span class="ident">program_id</span>: <span class="kw-2">&amp;</span><span class="ident">Pubkey</span>,
+    <span class="ident">accounts</span>: <span class="kw-2">&amp;</span>[<span class="ident">AccountInfo</span>],
+    <span class="ident">instruction_data</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],
+) -&gt; <span class="ident">ProgramResult</span> {
+    <span class="kw">let</span> <span class="ident">account_info_iter</span> <span class="op">=</span> <span class="kw-2">&amp;mut</span> <span class="ident">accounts</span>.<span class="ident">iter</span>();
+    <span class="kw">let</span> <span class="ident">payer</span> <span class="op">=</span> <span class="ident">next_account_info</span>(<span class="ident">account_info_iter</span>)<span class="question-mark">?</span>;
+    <span class="kw">let</span> <span class="ident">vault_pda</span> <span class="op">=</span> <span class="ident">next_account_info</span>(<span class="ident">account_info_iter</span>)<span class="question-mark">?</span>;
+    <span class="kw">let</span> <span class="ident">system_program</span> <span class="op">=</span> <span class="ident">next_account_info</span>(<span class="ident">account_info_iter</span>)<span class="question-mark">?</span>;
+
+    <span class="macro">assert!</span>(<span class="ident">payer</span>.<span class="ident">is_writable</span>);
+    <span class="macro">assert!</span>(<span class="ident">payer</span>.<span class="ident">is_signer</span>);
+    <span class="macro">assert!</span>(<span class="ident">vault_pda</span>.<span class="ident">is_writable</span>);
+    <span class="macro">assert_eq!</span>(<span class="ident">vault_pda</span>.<span class="ident">owner</span>, <span class="kw-2">&amp;</span><span class="ident">system_program::ID</span>);
+    <span class="macro">assert!</span>(<span class="ident">system_program::check_id</span>(<span class="ident">system_program</span>.<span class="ident">key</span>));
+
+    <span class="kw">let</span> <span class="ident">vault_bump_seed</span> <span class="op">=</span> <span class="ident">instruction_data</span>[<span class="number">0</span>];
+    <span class="kw">let</span> <span class="ident">vault_seeds</span> <span class="op">=</span> <span class="kw-2">&amp;</span>[<span class="string">b&quot;vault&quot;</span>, <span class="ident">payer</span>.<span class="ident">key</span>.<span class="ident">as_ref</span>(), <span class="kw-2">&amp;</span>[<span class="ident">vault_bump_seed</span>]];
+    <span class="kw">let</span> <span class="ident">expected_vault_pda</span> <span class="op">=</span> <span class="ident">Pubkey::create_program_address</span>(<span class="ident">vault_seeds</span>, <span class="ident">program_id</span>)<span class="question-mark">?</span>;
+
+    <span class="macro">assert_eq!</span>(<span class="ident">vault_pda</span>.<span class="ident">key</span>, <span class="kw-2">&amp;</span><span class="ident">expected_vault_pda</span>);
+
+    <span class="kw">let</span> <span class="ident">lamports</span> <span class="op">=</span> <span class="number">10000000</span>;
+    <span class="kw">let</span> <span class="ident">vault_size</span> <span class="op">=</span> <span class="number">16</span>;
+
+    <span class="ident">invoke_signed</span>(
+        <span class="kw-2">&amp;</span><span class="ident">system_instruction::create_account</span>(
+            <span class="kw-2">&amp;</span><span class="ident">payer</span>.<span class="ident">key</span>,
+            <span class="kw-2">&amp;</span><span class="ident">vault_pda</span>.<span class="ident">key</span>,
+            <span class="ident">lamports</span>,
+            <span class="ident">vault_size</span>,
+            <span class="kw-2">&amp;</span><span class="ident">program_id</span>,
+        ),
+        <span class="kw-2">&amp;</span>[
+            <span class="ident">payer</span>.<span class="ident">clone</span>(),
+            <span class="ident">vault_pda</span>.<span class="ident">clone</span>(),
+        ],
+        <span class="kw-2">&amp;</span>[
+            <span class="kw-2">&amp;</span>[
+                <span class="string">b&quot;vault&quot;</span>,
+                <span class="ident">payer</span>.<span class="ident">key</span>.<span class="ident">as_ref</span>(),
+                <span class="kw-2">&amp;</span>[<span class="ident">vault_bump_seed</span>],
+            ],
+        ]
+    )<span class="question-mark">?</span>;
+    <span class="prelude-val">Ok</span>(())
+}</code></pre></div>
+<h2 id="native-programs"><a href="#native-programs">Native programs</a></h2>
+<p>Some solana programs are <a href="https://docs.solana.com/developing/runtime-facilities/programs"><em>native programs</em></a>, running native machine
+code that is distributed with the runtime, with well-known program IDs.</p>
+<p>Some native programs can be <a href="#cross-program-instruction-execution">invoked</a> by other programs, but some can
+only be executed as “top-level” instructions included by off-chain clients
+in a <a href="https://docs.rs/solana-sdk/latest/solana_sdk/transaction/struct.Transaction.html"><code>Transaction</code></a>.</p>
+<p>This crate defines the program IDs for most native programs. Even though
+some native programs cannot be invoked by other programs, a Solana program
+may need access to their program IDs. For example, a program may need to
+verify that an ed25519 signature verification instruction was included in
+the same transaction as its own instruction. For many native programs, this
+crate also defines enums that represent the instructions they process, and
+constructors for building the instructions.</p>
+<p>Locations of program IDs and instruction constructors are noted in the list
+below, as well as whether they are invokable by other programs.</p>
+<p>While some native programs have been active since the genesis block, others
+are activated dynamically after a specific <a href="https://docs.solana.com/terminology#slot">slot</a>, and some are not yet
+active. This documentation does not distinguish which native programs are
+active on any particular network. The <code>solana feature status</code> CLI command
+can help in determining active features.</p>
+<p>Native programs important to Solana program authors include:</p>
+<ul>
+<li>
+<p><strong>System Program</strong>: Creates new accounts, allocates account data, assigns
+accounts to owning programs, transfers lamports from System Program owned
+accounts and pays transaction fees.</p>
+<ul>
+<li>ID: <a href="system_program/index.html" title="solana_program::system_program"><code>solana_program::system_program</code></a></li>
+<li>Instruction: <a href="system_instruction/index.html" title="solana_program::system_instruction"><code>solana_program::system_instruction</code></a></li>
+<li>Invokable by programs? yes</li>
+</ul>
+</li>
+<li>
+<p><strong>Compute Budget Program</strong>: Requests additional CPU or memory resources
+for a transaction. This program does nothing when called from another
+program.</p>
+<ul>
+<li>ID: <a href="https://docs.rs/solana-sdk/latest/solana_sdk/compute_budget/index.html"><code>solana_sdk::compute_budget</code></a></li>
+<li>Instruction: <a href="https://docs.rs/solana-sdk/latest/solana_sdk/compute_budget/index.html"><code>solana_sdk::compute_budget</code></a></li>
+<li>Invokable by programs? no</li>
+</ul>
+</li>
+<li>
+<p><strong>ed25519 Program</strong>: Verifies an ed25519 signature.</p>
+<ul>
+<li>ID: <a href="ed25519_program/index.html" title="solana_program::ed25519_program"><code>solana_program::ed25519_program</code></a></li>
+<li>Instruction: <a href="https://docs.rs/solana-sdk/latest/solana_sdk/ed25519_instruction/index.html"><code>solana_sdk::ed25519_instruction</code></a></li>
+<li>Invokable by programs? no</li>
+</ul>
+</li>
+<li>
+<p><strong>secp256k1 Program</strong>: Verifies secp256k1 public key recovery operations.</p>
+<ul>
+<li>ID: <a href="secp256k1_program/index.html" title="solana_program::secp256k1_program"><code>solana_program::secp256k1_program</code></a></li>
+<li>Instruction: <a href="https://docs.rs/solana-sdk/latest/solana_sdk/secp256k1_instruction/index.html"><code>solana_sdk::secp256k1_instruction</code></a></li>
+<li>Invokable by programs? no</li>
+</ul>
+</li>
+<li>
+<p><strong>BPF Loader</strong>: Deploys, and executes immutable programs on the chain.</p>
+<ul>
+<li>ID: <a href="bpf_loader/index.html" title="solana_program::bpf_loader"><code>solana_program::bpf_loader</code></a></li>
+<li>Instruction: <a href="loader_instruction/index.html" title="solana_program::loader_instruction"><code>solana_program::loader_instruction</code></a></li>
+<li>Invokable by programs? yes</li>
+</ul>
+</li>
+<li>
+<p><strong>Upgradable BPF Loader</strong>: Deploys, upgrades, and executes upgradable
+programs on the chain.</p>
+<ul>
+<li>ID: <a href="bpf_loader_upgradeable/index.html" title="solana_program::bpf_loader_upgradeable"><code>solana_program::bpf_loader_upgradeable</code></a></li>
+<li>Instruction: <a href="loader_upgradeable_instruction/index.html" title="solana_program::loader_upgradeable_instruction"><code>solana_program::loader_upgradeable_instruction</code></a></li>
+<li>Invokable by programs? yes</li>
+</ul>
+</li>
+<li>
+<p><strong>Deprecated BPF Loader</strong>: Deploys, and executes immutable programs on the
+chain.</p>
+<ul>
+<li>ID: <a href="bpf_loader_deprecated/index.html" title="solana_program::bpf_loader_deprecated"><code>solana_program::bpf_loader_deprecated</code></a></li>
+<li>Instruction: <a href="loader_instruction/index.html" title="solana_program::loader_instruction"><code>solana_program::loader_instruction</code></a></li>
+<li>Invokable by programs? yes</li>
+</ul>
+</li>
+</ul>
+<h2 id="sysvars"><a href="#sysvars">Sysvars</a></h2>
+<p>Sysvars are special accounts that contain dynamically-updated data about
+the network cluster, the blockchain history, and the executing transaction.</p>
+<p>The program IDs for sysvars are defined in the <a href="sysvar/index.html" title="sysvar"><code>sysvar</code></a> module, and simple
+sysvars implement the <a href="sysvar/trait.Sysvar.html#method.get"><code>Sysvar::get</code></a> method, which loads a sysvar directly
+from the runtime, as in this example that logs the <code>clock</code> sysvar:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use</span> <span class="ident">solana_program</span>::{
+    <span class="ident">account_info::AccountInfo</span>,
+    <span class="ident">clock</span>,
+    <span class="ident">entrypoint::ProgramResult</span>,
+    <span class="ident">msg</span>,
+    <span class="ident">pubkey::Pubkey</span>,
+    <span class="ident">sysvar::Sysvar</span>,
+};
+
+<span class="kw">fn</span> <span class="ident">process_instruction</span>(
+    <span class="ident">program_id</span>: <span class="kw-2">&amp;</span><span class="ident">Pubkey</span>,
+    <span class="ident">accounts</span>: <span class="kw-2">&amp;</span>[<span class="ident">AccountInfo</span>],
+    <span class="ident">instruction_data</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],
+) -&gt; <span class="ident">ProgramResult</span> {
+    <span class="kw">let</span> <span class="ident">clock</span> <span class="op">=</span> <span class="ident">clock::Clock::get</span>()<span class="question-mark">?</span>;
+    <span class="macro">msg!</span>(<span class="string">&quot;clock: {:#?}&quot;</span>, <span class="ident">clock</span>);
+    <span class="prelude-val">Ok</span>(())
+}</code></pre></div>
+<p>Since Solana sysvars are accounts, if the <code>AccountInfo</code> is provided to the
+program, then the program can deserialize the sysvar with
+<a href="sysvar/trait.Sysvar.html#method.from_account_info"><code>Sysvar::from_account_info</code></a> to access its data, as in this example that
+again logs the <a href="sysvar/clock/index.html"><code>clock</code></a> sysvar.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use</span> <span class="ident">solana_program</span>::{
+    <span class="ident">account_info</span>::{<span class="ident">next_account_info</span>, <span class="ident">AccountInfo</span>},
+    <span class="ident">clock</span>,
+    <span class="ident">entrypoint::ProgramResult</span>,
+    <span class="ident">msg</span>,
+    <span class="ident">pubkey::Pubkey</span>,
+    <span class="ident">sysvar::Sysvar</span>,
+};
+
+<span class="kw">fn</span> <span class="ident">process_instruction</span>(
+    <span class="ident">program_id</span>: <span class="kw-2">&amp;</span><span class="ident">Pubkey</span>,
+    <span class="ident">accounts</span>: <span class="kw-2">&amp;</span>[<span class="ident">AccountInfo</span>],
+    <span class="ident">instruction_data</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],
+) -&gt; <span class="ident">ProgramResult</span> {
+    <span class="kw">let</span> <span class="ident">account_info_iter</span> <span class="op">=</span> <span class="kw-2">&amp;mut</span> <span class="ident">accounts</span>.<span class="ident">iter</span>();
+    <span class="kw">let</span> <span class="ident">clock_account</span> <span class="op">=</span> <span class="ident">next_account_info</span>(<span class="ident">account_info_iter</span>)<span class="question-mark">?</span>;
+    <span class="kw">let</span> <span class="ident">clock</span> <span class="op">=</span> <span class="ident">clock::Clock::from_account_info</span>(<span class="kw-2">&amp;</span><span class="ident">clock_account</span>)<span class="question-mark">?</span>;
+    <span class="macro">msg!</span>(<span class="string">&quot;clock: {:#?}&quot;</span>, <span class="ident">clock</span>);
+    <span class="prelude-val">Ok</span>(())
+}</code></pre></div>
+<p>When possible, programs should prefer to call <code>Sysvar::get</code> instead of
+deserializing with <code>Sysvar::from_account_info</code>, as the latter imposes extra
+overhead of deserialization while also requiring the sysvar account address
+be passed to the program, wasting the limited space available to
+transactions. Deserializing sysvars that can instead be retrieved with
+<code>Sysvar::get</code> should be only be considered for compatibility with older
+programs that pass around sysvar accounts.</p>
+<p>Some sysvars are too large to deserialize within a program, and
+<code>Sysvar::from_account_info</code> returns an error. Some sysvars are too large
+to deserialize within a program, and attempting to will exhaust the
+program’s compute budget. Some sysvars do not implement <code>Sysvar::get</code> and
+return an error. Some sysvars have custom deserializers that do not
+implement the <code>Sysvar</code> trait. These cases are documented in the modules for
+individual sysvars.</p>
+<p>For more details see the Solana <a href="https://docs.solana.com/developing/runtime-facilities/sysvars">documentation on sysvars</a>.</p>
+</div></details><h2 id="modules" class="small-section-header"><a href="#modules">Modules</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="mod" href="account_info/index.html" title="solana_program::account_info mod">account_info</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="blake3/index.html" title="solana_program::blake3 mod">blake3</a></div><div class="item-right docblock-short"><p>The <code>blake3</code> module provides functions for creating hashes.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="borsh/index.html" title="solana_program::borsh mod">borsh</a></div><div class="item-right docblock-short"><p>Borsh utils</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="bpf_loader/index.html" title="solana_program::bpf_loader mod">bpf_loader</a></div><div class="item-right docblock-short"><p>The latest Solana BPF loader.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="bpf_loader_deprecated/index.html" title="solana_program::bpf_loader_deprecated mod">bpf_loader_deprecated</a></div><div class="item-right docblock-short"><p>The original and now deprecated Solana BPF loader.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="bpf_loader_upgradeable/index.html" title="solana_program::bpf_loader_upgradeable mod">bpf_loader_upgradeable</a></div><div class="item-right docblock-short"><p>An Upgradeable Solana BPF loader.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="clock/index.html" title="solana_program::clock mod">clock</a></div><div class="item-right docblock-short"><p>Provides information about the network’s clock which is made up of ticks, slots, etc…</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="config/index.html" title="solana_program::config mod">config</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="debug_account_data/index.html" title="solana_program::debug_account_data mod">debug_account_data</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="decode_error/index.html" title="solana_program::decode_error mod">decode_error</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="ed25519_program/index.html" title="solana_program::ed25519_program mod">ed25519_program</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="entrypoint/index.html" title="solana_program::entrypoint mod">entrypoint</a></div><div class="item-right docblock-short"><p>Solana Rust-based BPF program entry point supported by the latest
+BPFLoader.  For more information see ‘./bpf_loader.rs’</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="entrypoint_deprecated/index.html" title="solana_program::entrypoint_deprecated mod">entrypoint_deprecated</a></div><div class="item-right docblock-short"><p>Solana Rust-based BPF program entry point supported by the original
+and now deprecated BPFLoader.  For more information see
+‘./bpf_loader_deprecated.rs’</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="epoch_schedule/index.html" title="solana_program::epoch_schedule mod">epoch_schedule</a></div><div class="item-right docblock-short"><p>configuration for epochs, slots</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="feature/index.html" title="solana_program::feature mod">feature</a></div><div class="item-right docblock-short"><p>Runtime features.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="fee_calculator/index.html" title="solana_program::fee_calculator mod">fee_calculator</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="hash/index.html" title="solana_program::hash mod">hash</a></div><div class="item-right docblock-short"><p>The <code>hash</code> module provides functions for creating SHA-256 hashes.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="incinerator/index.html" title="solana_program::incinerator mod">incinerator</a></div><div class="item-right docblock-short"><p>Lamports credited to this address will be removed from the total supply (burned) at the end of
+the current block.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="instruction/index.html" title="solana_program::instruction mod">instruction</a></div><div class="item-right docblock-short"><p>Types for directing the execution of Solana programs.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="keccak/index.html" title="solana_program::keccak mod">keccak</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="lamports/index.html" title="solana_program::lamports mod">lamports</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="loader_instruction/index.html" title="solana_program::loader_instruction mod">loader_instruction</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="loader_upgradeable_instruction/index.html" title="solana_program::loader_upgradeable_instruction mod">loader_upgradeable_instruction</a></div><div class="item-right docblock-short"><p>Upgradeable loader instruction definitions</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="log/index.html" title="solana_program::log mod">log</a></div><div class="item-right docblock-short"><p>Logging utilities for Rust-based Solana programs.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="message/index.html" title="solana_program::message mod">message</a></div><div class="item-right docblock-short"><p>Sequences of <a href="instruction/struct.Instruction.html"><code>Instruction</code></a>s executed within a single transaction.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="native_token/index.html" title="solana_program::native_token mod">native_token</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="nonce/index.html" title="solana_program::nonce mod">nonce</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="program/index.html" title="solana_program::program mod">program</a></div><div class="item-right docblock-short"><p>Cross-program invocation.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="program_error/index.html" title="solana_program::program_error mod">program_error</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="program_memory/index.html" title="solana_program::program_memory mod">program_memory</a></div><div class="item-right docblock-short"><p>Solana Rust-based BPF memory operations</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="program_option/index.html" title="solana_program::program_option mod">program_option</a></div><div class="item-right docblock-short"><p>A C representation of Rust’s <code>std::option::Option</code> used across the FFI
+boundary for Solana program interfaces</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="program_pack/index.html" title="solana_program::program_pack mod">program_pack</a></div><div class="item-right docblock-short"><p>State transition types</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="program_stubs/index.html" title="solana_program::program_stubs mod">program_stubs</a></div><div class="item-right docblock-short"><p>Syscall stubs when building for programs for non-BPF targets</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="program_utils/index.html" title="solana_program::program_utils mod">program_utils</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="pubkey/index.html" title="solana_program::pubkey mod">pubkey</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="rent/index.html" title="solana_program::rent mod">rent</a></div><div class="item-right docblock-short"><p>configuration for network rent</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="sanitize/index.html" title="solana_program::sanitize mod">sanitize</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="secp256k1_program/index.html" title="solana_program::secp256k1_program mod">secp256k1_program</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="secp256k1_recover/index.html" title="solana_program::secp256k1_recover mod">secp256k1_recover</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="serialize_utils/index.html" title="solana_program::serialize_utils mod">serialize_utils</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="short_vec/index.html" title="solana_program::short_vec mod">short_vec</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="slot_hashes/index.html" title="solana_program::slot_hashes mod">slot_hashes</a></div><div class="item-right docblock-short"><p>named accounts for synthesized data accounts for bank state, etc.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="slot_history/index.html" title="solana_program::slot_history mod">slot_history</a></div><div class="item-right docblock-short"><p>slot history</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="stake/index.html" title="solana_program::stake mod">stake</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="stake_history/index.html" title="solana_program::stake_history mod">stake_history</a></div><div class="item-right docblock-short"><p>named accounts for synthesized data accounts for bank state, etc.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="system_instruction/index.html" title="solana_program::system_instruction mod">system_instruction</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="system_program/index.html" title="solana_program::system_program mod">system_program</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="sysvar/index.html" title="solana_program::sysvar mod">sysvar</a></div><div class="item-right docblock-short"><p>Access to special accounts with dynamically-updated data.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="mod" href="vote/index.html" title="solana_program::vote mod">vote</a></div><div class="item-right docblock-short"></div></div></div><h2 id="macros" class="small-section-header"><a href="#macros">Macros</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.copy_field.html" title="solana_program::copy_field macro">copy_field</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.custom_heap_default.html" title="solana_program::custom_heap_default macro">custom_heap_default</a></div><div class="item-right docblock-short"><p>Define the default global allocator.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.custom_panic_default.html" title="solana_program::custom_panic_default macro">custom_panic_default</a></div><div class="item-right docblock-short"><p>Define the default global panic handler.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.declare_deprecated_id.html" title="solana_program::declare_deprecated_id macro">declare_deprecated_id</a></div><div class="item-right docblock-short"><p>Same as <code>declare_id</code> except report that this id has been deprecated</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.declare_deprecated_sysvar_id.html" title="solana_program::declare_deprecated_sysvar_id macro">declare_deprecated_sysvar_id</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.declare_id.html" title="solana_program::declare_id macro">declare_id</a></div><div class="item-right docblock-short"><p>Convenience macro to declare a static public key and functions to interact with it</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.declare_sysvar_id.html" title="solana_program::declare_sysvar_id macro">declare_sysvar_id</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.entrypoint.html" title="solana_program::entrypoint macro">entrypoint</a></div><div class="item-right docblock-short"><p>Declare the program entry point and set up global handlers.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.entrypoint_deprecated.html" title="solana_program::entrypoint_deprecated macro">entrypoint_deprecated</a></div><div class="item-right docblock-short"><p>Declare the entry point of the program.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.impl_sysvar_get.html" title="solana_program::impl_sysvar_get macro">impl_sysvar_get</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.info.html" title="solana_program::info macro">info</a><span class="stab deprecated" title="">Deprecated</span></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.msg.html" title="solana_program::msg macro">msg</a></div><div class="item-right docblock-short"><p>Print a message to the log.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.pubkey.html" title="solana_program::pubkey macro">pubkey</a></div><div class="item-right docblock-short"><p>Convenience macro to define a static public key</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.unchecked_div_by_const.html" title="solana_program::unchecked_div_by_const macro">unchecked_div_by_const</a></div><div class="item-right docblock-short"><p>Convenience macro for doing integer division where the opersation’s safety
+can be checked at compile-time</p>
+</div></div></div><h2 id="functions" class="small-section-header"><a href="#functions">Functions</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.clone_zeroed.html" title="solana_program::clone_zeroed fn">clone_zeroed</a></div><div class="item-right docblock-short"></div></div></div><h2 id="attributes" class="small-section-header"><a href="#attributes">Attribute Macros</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="attr" href="attr.wasm_bindgen.html" title="solana_program::wasm_bindgen attr">wasm_bindgen</a></div><div class="item-right docblock-short"></div></div></div></section></div></main><div id="rustdoc-vars" data-root-path="../" data-current-crate="solana_program" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0 (4b91a6ea7 2022-08-08)" ></div>
+</body></html>

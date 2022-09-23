@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":[["Context","Provides non-argument inputs to the program."],["CpiContext","Context specifying non-argument inputs for cross-program-invocations."]]};

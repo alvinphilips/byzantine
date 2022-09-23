@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":[["AccountLoader","Type facilitating on demand zero copy deserialization."]]};

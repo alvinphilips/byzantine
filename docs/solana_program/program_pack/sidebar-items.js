@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"trait":[["IsInitialized","Check if a program account state is initialized"],["Pack","Safely and efficiently (de)serialize account state"],["Sealed","Implementors must have a known size"]]};

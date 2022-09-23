@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":[["SIGHASH_GLOBAL_NAMESPACE",""],["SIGHASH_STATE_NAMESPACE",""]],"fn":[["generate_ctor_args",""],["generate_ctor_typed_args",""],["generate_ix_variant",""],["sighash",""],["sighash_ctor",""]]};

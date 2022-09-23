@@ -1,0 +1,229 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/Users/alvin/.cargo/registry/src/github.com-1ecc6299db9ec823/solana-program-1.10.39/src/message/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../solana_program/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../../../solana_program/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../solana_program/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
+                                <a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div>
+                        </div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
+<span id="100">100</span>
+<span id="101">101</span>
+<span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+</pre><pre class="rust"><code><span class="doccomment">//! Sequences of [`Instruction`]s executed within a single transaction.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! [`Instruction`]: crate::instruction::Instruction</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! In Solana, programs execute instructions, and clients submit sequences</span>
+<span class="doccomment">//! of instructions to the network to be atomically executed as [`Transaction`]s.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! [`Transaction`]: https://docs.rs/solana-sdk/latest/solana-sdk/transaction/struct.Transaction.html</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! A [`Message`] is the compact internal encoding of a transaction, as</span>
+<span class="doccomment">//! transmitted across the network and stored in, and operated on, by the</span>
+<span class="doccomment">//! runtime. It contains a flat array of all accounts accessed by all</span>
+<span class="doccomment">//! instructions in the message, a [`MessageHeader`] that describes the layout</span>
+<span class="doccomment">//! of that account array, a [recent blockhash], and a compact encoding of the</span>
+<span class="doccomment">//! message&#39;s instructions.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! [recent blockhash]: https://docs.solana.com/developing/programming-model/transactions#recent-blockhash</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! Clients most often deal with `Instruction`s and `Transaction`s, with</span>
+<span class="doccomment">//! `Message`s being created by `Transaction` constructors.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! To ensure reliable network delivery, serialized messages must fit into the</span>
+<span class="doccomment">//! IPv6 MTU size, conservatively assumed to be 1280 bytes. Thus constrained,</span>
+<span class="doccomment">//! care must be taken in the amount of data consumed by instructions, and the</span>
+<span class="doccomment">//! number of accounts they require to function.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! This module defines two versions of `Message` in their own modules:</span>
+<span class="doccomment">//! [`legacy`] and [`v0`]. `legacy` is reexported here and is the current</span>
+<span class="doccomment">//! version as of Solana 1.10.0. `v0` is a [future message format] that encodes</span>
+<span class="doccomment">//! more account keys into a transaction than the legacy format. The</span>
+<span class="doccomment">//! [`VersionedMessage`] type is a thin wrapper around either message version.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! [future message format]: https://docs.solana.com/proposals/transactions-v2</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! Despite living in the `solana-program` crate, there is no way to access the</span>
+<span class="doccomment">//! runtime&#39;s messages from within a Solana program, and only the legacy message</span>
+<span class="doccomment">//! types continue to be exposed to Solana programs, for backwards compatibility</span>
+<span class="doccomment">//! reasons.</span>
+
+<span class="kw">mod</span> <span class="ident">compiled_keys</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">legacy</span>;
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;bpf&quot;</span>))]</span>
+<span class="attribute">#[<span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;&quot;</span>]</span>
+<span class="kw">mod</span> <span class="ident">non_bpf_modules</span> {
+    <span class="kw">mod</span> <span class="ident">account_keys</span>;
+    <span class="kw">mod</span> <span class="ident">sanitized</span>;
+    <span class="kw">mod</span> <span class="ident">versions</span>;
+
+    <span class="kw">pub</span> <span class="kw">use</span> {<span class="ident">account_keys</span>::<span class="kw-2">*</span>, <span class="ident">sanitized</span>::<span class="kw-2">*</span>, <span class="ident">versions</span>::<span class="kw-2">*</span>};
+}
+
+<span class="kw">use</span> <span class="ident">compiled_keys</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">legacy::Message</span>;
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;bpf&quot;</span>))]</span>
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">non_bpf_modules</span>::<span class="kw-2">*</span>;
+
+<span class="doccomment">/// The length of a message header in bytes.</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MESSAGE_HEADER_LENGTH</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">3</span>;
+
+<span class="doccomment">/// Describes the organization of a `Message`&#39;s account keys.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Every [`Instruction`] specifies which accounts it may reference, or</span>
+<span class="doccomment">/// otherwise requires specific permissions of. Those specifications are:</span>
+<span class="doccomment">/// whether the account is read-only, or read-write; and whether the account</span>
+<span class="doccomment">/// must have signed the transaction containing the instruction.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Whereas individual `Instruction`s contain a list of all accounts they may</span>
+<span class="doccomment">/// access, along with their required permissions, a `Message` contains a</span>
+<span class="doccomment">/// single shared flat list of _all_ accounts required by _all_ instructions in</span>
+<span class="doccomment">/// a transaction. When building a `Message`, this flat list is created and</span>
+<span class="doccomment">/// `Instruction`s are converted to [`CompiledInstruction`]s. Those</span>
+<span class="doccomment">/// `CompiledInstruction`s then reference by index the accounts they require in</span>
+<span class="doccomment">/// the single shared account list.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [`Instruction`]: crate::instruction::Instruction</span>
+<span class="doccomment">/// [`CompiledInstruction`]: crate::instruction::CompiledInstruction</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The shared account list is ordered by the permissions required of the accounts:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - accounts that are writable and signers</span>
+<span class="doccomment">/// - accounts that are read-only and signers</span>
+<span class="doccomment">/// - accounts that are writable and not signers</span>
+<span class="doccomment">/// - accounts that are read-only and not signers</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Given this ordering, the fields of `MessageHeader` describe which accounts</span>
+<span class="doccomment">/// in a transaction require which permissions.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// When multiple transactions access the same read-only accounts, the runtime</span>
+<span class="doccomment">/// may process them in parallel, in a single [PoH] entry. Transactions that</span>
+<span class="doccomment">/// access the same read-write accounts are processed sequentially.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [PoH]: https://docs.solana.com/cluster/synchronization</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Default</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">AbiExample</span>)]</span>
+<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename_all</span> <span class="op">=</span> <span class="string">&quot;camelCase&quot;</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MessageHeader</span> {
+    <span class="doccomment">/// The number of signatures required for this message to be considered</span>
+    <span class="doccomment">/// valid. The signers of those signatures must match the first</span>
+    <span class="doccomment">/// `num_required_signatures` of [`Message::account_keys`].</span>
+    <span class="comment">// NOTE: Serialization-related changes must be paired with the direct read at sigverify.</span>
+    <span class="kw">pub</span> <span class="ident">num_required_signatures</span>: <span class="ident">u8</span>,
+
+    <span class="doccomment">/// The last `num_readonly_signed_accounts` of the signed keys are read-only</span>
+    <span class="doccomment">/// accounts.</span>
+    <span class="kw">pub</span> <span class="ident">num_readonly_signed_accounts</span>: <span class="ident">u8</span>,
+
+    <span class="doccomment">/// The last `num_readonly_unsigned_accounts` of the unsigned keys are</span>
+    <span class="doccomment">/// read-only accounts.</span>
+    <span class="kw">pub</span> <span class="ident">num_readonly_unsigned_accounts</span>: <span class="ident">u8</span>,
+}
+</code></pre></div>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="solana_program" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0 (4b91a6ea7 2022-08-08)" ></div>
+</body></html>

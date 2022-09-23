@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"trait":[["DecodeError","Allows custom errors to be decoded back to their original enum"]]};

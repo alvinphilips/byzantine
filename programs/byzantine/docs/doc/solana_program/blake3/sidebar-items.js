@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":[["HASH_BYTES","Size of hash"]],"enum":[["ParseHashError",""]],"fn":[["extend_and_hash","Return the hash of the given hash extended with the given value."],["hash","Return a Blake3 hash for the given data."],["hashv","Return a Blake3 hash for the given data."]],"struct":[["Hash",""],["Hasher",""]]};

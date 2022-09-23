@@ -1,0 +1,5 @@
+(function() {var implementors = {};
+implementors["anchor_lang"] = [];
+implementors["anchor_spl"] = [{"text":"impl <a class=\"trait\" href=\"anchor_lang/trait.Owner.html\" title=\"trait anchor_lang::Owner\">Owner</a> for <a class=\"struct\" href=\"anchor_spl/token/struct.TokenAccount.html\" title=\"struct anchor_spl::token::TokenAccount\">TokenAccount</a>","synthetic":false,"types":["anchor_spl::token::TokenAccount"]},{"text":"impl <a class=\"trait\" href=\"anchor_lang/trait.Owner.html\" title=\"trait anchor_lang::Owner\">Owner</a> for <a class=\"struct\" href=\"anchor_spl/token/struct.Mint.html\" title=\"struct anchor_spl::token::Mint\">Mint</a>","synthetic":false,"types":["anchor_spl::token::Mint"]}];
+implementors["byzantine"] = [{"text":"impl <a class=\"trait\" href=\"anchor_lang/trait.Owner.html\" title=\"trait anchor_lang::Owner\">Owner</a> for <a class=\"struct\" href=\"byzantine/struct.Round.html\" title=\"struct byzantine::Round\">Round</a>","synthetic":false,"types":["byzantine::Round"]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

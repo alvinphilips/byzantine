@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":[["CrateContext","Crate parse context"],["ModuleContext","Module parse context"]]};

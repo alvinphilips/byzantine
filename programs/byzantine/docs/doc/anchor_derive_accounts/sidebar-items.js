@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"derive":[["Accounts","Implements an `Accounts` deserializer on the given struct. Can provide further functionality through the use of attributes."]]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":[["Sysvar","Type validating that the account is a sysvar and deserializing it."]]};

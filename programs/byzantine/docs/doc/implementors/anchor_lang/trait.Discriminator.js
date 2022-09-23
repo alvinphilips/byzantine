@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["byzantine"] = [{"text":"impl <a class=\"trait\" href=\"anchor_lang/trait.Discriminator.html\" title=\"trait anchor_lang::Discriminator\">Discriminator</a> for <a class=\"struct\" href=\"byzantine/struct.Round.html\" title=\"struct byzantine::Round\">Round</a>","synthetic":false,"types":["byzantine::Round"]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

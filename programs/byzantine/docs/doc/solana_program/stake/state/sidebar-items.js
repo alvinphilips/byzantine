@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":[["StakeAuthorize",""],["StakeState",""]],"struct":[["Authorized",""],["Delegation",""],["Lockup",""],["Meta",""],["Stake",""]],"type":[["StakeActivationStatus",""]]};
