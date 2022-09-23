@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":[["process_enum",""],["process_struct",""]]};

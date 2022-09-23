@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":[["process_create_associated_token_account","Processes CreateAssociatedTokenAccount instruction"],["process_instruction","Instruction processor"]]};

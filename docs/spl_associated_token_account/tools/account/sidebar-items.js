@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":[["create_pda_account","Creates associated token account using Program Derived Address for the given seeds"]]};

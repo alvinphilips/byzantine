@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"attr":[["access_control","Executes the given access control method before running the decorated instruction handler. Any method in scope of the attribute can be invoked with any arguments from the associated instruction handler."]]};

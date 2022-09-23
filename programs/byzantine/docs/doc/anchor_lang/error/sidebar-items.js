@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":[["ERROR_CODE_OFFSET","The starting point for user defined error codes."]],"enum":[["ComparedValues",""],["Error",""],["ErrorCode","Error codes that can be returned by internal framework code."],["ErrorOrigin",""]],"struct":[["AnchorError",""],["ProgramErrorWithOrigin",""],["Source",""]]};

@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["solana_program"] = [{"text":"impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.63.0/core/alloc/global/trait.GlobalAlloc.html\" title=\"trait core::alloc::global::GlobalAlloc\">GlobalAlloc</a> for <a class=\"struct\" href=\"solana_program/entrypoint/struct.BumpAllocator.html\" title=\"struct solana_program::entrypoint::BumpAllocator\">BumpAllocator</a>","synthetic":false,"types":["solana_program::entrypoint::BumpAllocator"]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

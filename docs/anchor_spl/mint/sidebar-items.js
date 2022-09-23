@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"static":[["SRM","The static program ID"],["USDC","The static program ID"]]};

@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["spl_token"] = [{"text":"impl <a class=\"trait\" href=\"num_enum/trait.TryFromPrimitive.html\" title=\"trait num_enum::TryFromPrimitive\">TryFromPrimitive</a> for <a class=\"enum\" href=\"spl_token/state/enum.AccountState.html\" title=\"enum spl_token::state::AccountState\">AccountState</a>","synthetic":false,"types":["spl_token::state::AccountState"]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

@@ -1,0 +1,121 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="The `#[interface]` attribute allows one to define an external program dependency, without having any knowledge about the program, other than the fact that it implements the given trait."><meta name="keywords" content="rust, rustlang, rust-lang, interface"><title>interface in anchor_lang - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../normalize.css"><link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../dark.css" disabled><link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../storage.js"></script><script defer src="sidebar-items.js"></script><script defer src="../main.js"></script><noscript><link rel="stylesheet" href="../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../favicon.svg"></head><body class="rustdoc attr"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../anchor_lang/index.html"><div class="logo-container"><img class="rust-logo" src="../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../anchor_lang/index.html"><div class="logo-container"><img class="rust-logo" src="../rust-logo.svg" alt="logo"></div>
+        </a><div class="sidebar-elems"><h2 class="location"><a href="index.html">In anchor_lang</a></h2></div></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../anchor_lang/index.html"><img class="rust-logo" src="../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
+                                <a href="../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../wheel.svg"></a></div>
+                        </div></form></nav></div><section id="main-content" class="content"><div class="main-heading">
+    <h1 class="fqn"><span class="in-band">Attribute Macro <a href="index.html">anchor_lang</a>::<wbr><a class="attr" href="#">interface</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../clipboard.svg" width="19" height="18" alt="Copy item path"></button></span></h1><span class="out-of-band"><a class="srclink" href="../src/anchor_attribute_interface/lib.rs.html#134-137">source</a> · <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span></div><div class="docblock item-decl"><pre class="rust attr"><code>#[interface]</code></pre></div><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>The <code>#[interface]</code> attribute allows one to define an external program
+dependency, without having any knowledge about the program, other than
+the fact that it implements the given trait.</p>
+<p>Additionally, the attribute generates a client that can be used to perform
+CPI to these external dependencies.</p>
+<h2 id="example"><a href="#example">Example</a></h2>
+<p>In the following example, we have a counter program, where the count
+can only be set if the configured external program authorizes it.</p>
+<h3 id="defining-an-interface"><a href="#defining-an-interface">Defining an <code>#[interface]</code></a></h3>
+<p>First we define the program that depends on an external interface.</p>
+
+<div class='information'><div class='tooltip ignore'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore"><code><span class="kw">use</span> <span class="ident">anchor_lang::prelude</span>::<span class="kw-2">*</span>;
+
+<span class="attribute">#[<span class="ident">interface</span>]</span>
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Auth</span><span class="op">&lt;</span><span class="lifetime">&#39;info</span>, <span class="ident">T</span>: <span class="ident">Accounts</span><span class="op">&lt;</span><span class="lifetime">&#39;info</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">is_authorized</span>(<span class="ident">ctx</span>: <span class="ident">Context</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">current</span>: <span class="ident">u64</span>, <span class="ident">new</span>: <span class="ident">u64</span>) -&gt; <span class="ident">anchor_lang::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+}
+
+<span class="attribute">#[<span class="ident">program</span>]</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">counter</span> {
+    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
+
+    <span class="attribute">#[<span class="ident">state</span>]</span>
+    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Counter</span> {
+        <span class="kw">pub</span> <span class="ident">count</span>: <span class="ident">u64</span>,
+        <span class="kw">pub</span> <span class="ident">auth_program</span>: <span class="ident">Pubkey</span>,
+    }
+
+    <span class="kw">impl</span> <span class="ident">Counter</span> {
+        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">_ctx</span>: <span class="ident">Context</span><span class="op">&lt;</span><span class="ident">Empty</span><span class="op">&gt;</span>, <span class="ident">auth_program</span>: <span class="ident">Pubkey</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+            <span class="prelude-val">Ok</span>(<span class="self">Self</span> {
+                <span class="ident">count</span>: <span class="number">0</span>,
+                <span class="ident">auth_program</span>,
+            })
+        }
+
+        <span class="attribute">#[<span class="ident">access_control</span>(<span class="ident">SetCount::accounts</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">&amp;</span><span class="ident">ctx</span>))]</span>
+        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_count</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">ctx</span>: <span class="ident">Context</span><span class="op">&lt;</span><span class="ident">SetCount</span><span class="op">&gt;</span>, <span class="ident">new_count</span>: <span class="ident">u64</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+            <span class="comment">// Ask the auth program if we should approve the transaction.</span>
+            <span class="kw">let</span> <span class="ident">cpi_program</span> <span class="op">=</span> <span class="ident">ctx</span>.<span class="ident">accounts</span>.<span class="ident">auth_program</span>.<span class="ident">clone</span>();
+            <span class="kw">let</span> <span class="ident">cpi_ctx</span> <span class="op">=</span> <span class="ident">CpiContext::new</span>(<span class="ident">cpi_program</span>, <span class="ident">Empty</span> {});
+
+            <span class="comment">// This is the client generated by the `#[interface]` attribute.</span>
+            <span class="ident">auth::is_authorized</span>(<span class="ident">cpi_ctx</span>, <span class="self">self</span>.<span class="ident">count</span>, <span class="ident">new_count</span>)<span class="question-mark">?</span>;
+
+            <span class="comment">// Approved, so update.</span>
+            <span class="self">self</span>.<span class="ident">count</span> <span class="op">=</span> <span class="ident">new_count</span>;
+            <span class="prelude-val">Ok</span>(())
+        }
+    }
+}
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Accounts</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Empty</span> {}
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Accounts</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SetCount</span><span class="op">&lt;</span><span class="lifetime">&#39;info</span><span class="op">&gt;</span> {
+    <span class="ident">auth_program</span>: <span class="ident">AccountInfo</span><span class="op">&lt;</span><span class="lifetime">&#39;info</span><span class="op">&gt;</span>,
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;info</span><span class="op">&gt;</span> <span class="ident">SetCount</span><span class="op">&lt;</span><span class="lifetime">&#39;info</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">accounts</span>(<span class="ident">counter</span>: <span class="kw-2">&amp;</span><span class="ident">Counter</span>, <span class="ident">ctx</span>: <span class="kw-2">&amp;</span><span class="ident">Context</span><span class="op">&lt;</span><span class="ident">SetCount</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+        <span class="kw">if</span> <span class="ident">ctx</span>.<span class="ident">accounts</span>.<span class="ident">auth_program</span>.<span class="ident">key</span> <span class="op">!</span><span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">counter</span>.<span class="ident">auth_program</span> {
+            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">error!</span>(<span class="ident">ErrorCode::InvalidAuthProgram</span>));
+        }
+        <span class="prelude-val">Ok</span>(())
+    }
+}
+
+<span class="attribute">#[<span class="ident">error_code</span>]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ErrorCode</span> {
+    <span class="attribute">#[<span class="ident">msg</span>(<span class="string">&quot;Invalid auth program.&quot;</span>)]</span>
+    <span class="ident">InvalidAuthProgram</span>,
+}</code></pre></div>
+<h3 id="defining-an-implementation"><a href="#defining-an-implementation">Defining an implementation</a></h3>
+<p>Now we define the program that implements the interface, which the above
+program will call.</p>
+
+<div class='information'><div class='tooltip ignore'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore"><code><span class="kw">use</span> <span class="ident">anchor_lang::prelude</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">counter::Auth</span>;
+
+<span class="attribute">#[<span class="ident">program</span>]</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">counter_auth</span> {
+    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
+
+    <span class="attribute">#[<span class="ident">state</span>]</span>
+    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CounterAuth</span>;
+
+    <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;info</span><span class="op">&gt;</span> <span class="ident">Auth</span><span class="op">&lt;</span><span class="lifetime">&#39;info</span>, <span class="ident">Empty</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">CounterAuth</span> {
+        <span class="kw">fn</span> <span class="ident">is_authorized</span>(<span class="ident">_ctx</span>: <span class="ident">Context</span><span class="op">&lt;</span><span class="ident">Empty</span><span class="op">&gt;</span>, <span class="ident">current</span>: <span class="ident">u64</span>, <span class="ident">new</span>: <span class="ident">u64</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+            <span class="kw">if</span> <span class="ident">current</span> <span class="op">%</span> <span class="number">2</span> <span class="op">==</span> <span class="number">0</span> {
+                <span class="kw">if</span> <span class="ident">new</span> <span class="op">%</span> <span class="number">2</span> <span class="op">==</span> <span class="number">0</span> {
+                    <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ProgramError::Custom</span>(<span class="number">50</span>).<span class="ident">into</span>()); <span class="comment">// Arbitrary error code.</span>
+                }
+            } <span class="kw">else</span> {
+                <span class="kw">if</span> <span class="ident">new</span> <span class="op">%</span> <span class="number">2</span> <span class="op">==</span> <span class="number">1</span> {
+                    <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ProgramError::Custom</span>(<span class="number">60</span>).<span class="ident">into</span>()); <span class="comment">// Arbitrary error code.</span>
+                }
+            }
+            <span class="prelude-val">Ok</span>(())
+        }
+    }
+}
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Accounts</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Empty</span> {}</code></pre></div>
+<h2 id="returning-values-across-cpi"><a href="#returning-values-across-cpi">Returning Values Across CPI</a></h2>
+<p>The caller above uses a <code>Result</code> to act as a boolean. However, in order
+for this feature to be maximally useful, we need a way to return values from
+interfaces. For now, one can do this by writing to a shared account, e.g.,
+with the SPL’s <a href="https://github.com/solana-labs/solana-program-library/tree/master/shared-memory">Shared Memory Program</a>.
+In the future, Anchor will add the ability to return values across CPI
+without having to worry about the details of shared memory accounts.</p>
+</div></details></section></div></main><div id="rustdoc-vars" data-root-path="../" data-current-crate="anchor_lang" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0 (4b91a6ea7 2022-08-08)" ></div>
+</body></html>

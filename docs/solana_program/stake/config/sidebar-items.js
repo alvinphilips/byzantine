@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":[["DEFAULT_SLASH_PENALTY",""],["DEFAULT_WARMUP_COOLDOWN_RATE",""]],"fn":[["check_id","Confirms that a given pubkey is equivalent to the program ID"],["id","Returns the program ID"]],"static":[["ID","The static program ID"]],"struct":[["Config",""]]};

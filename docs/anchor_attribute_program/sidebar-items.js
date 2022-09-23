@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"attr":[["program","The `#[program]` attribute defines the module containing all instruction handlers defining all entries into a Solana program."]]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":[["SUCCESS","Programs indicate success with a return value of 0"]],"fn":[["deserialize","Deserialize the input arguments"]],"type":[["ProcessInstruction","User implemented function to process an instruction"],["ProgramResult",""]]};

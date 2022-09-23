@@ -1,0 +1,93 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="The main type exported by the library, `BitVec`, is a packed, growable bit-vector. Its API mirrors that of `Vec` where reasonable."><meta name="keywords" content="rust, rustlang, rust-lang, bv"><title>bv - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../normalize.css"><link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../dark.css" disabled><link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../storage.js"></script><script defer src="../crates.js"></script><script defer src="../main.js"></script><noscript><link rel="stylesheet" href="../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../favicon.svg"></head><body class="rustdoc mod crate"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../bv/index.html"><div class="logo-container"><img class="rust-logo" src="../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../bv/index.html"><div class="logo-container"><img class="rust-logo" src="../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"><a href="#">Crate bv</a></h2><div class="sidebar-elems"><div class="block"><ul><li class="version">Version 0.11.1</li><li><a id="all-types" href="all.html">All Items</a></li></ul></div><section><div class="block"><ul><li><a href="#modules">Modules</a></li><li><a href="#macros">Macros</a></li><li><a href="#structs">Structs</a></li><li><a href="#traits">Traits</a></li></ul></div></section></div></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../bv/index.html"><img class="rust-logo" src="../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
+                                <a href="../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../wheel.svg"></a></div>
+                        </div></form></nav></div><section id="main-content" class="content"><div class="main-heading">
+    <h1 class="fqn"><span class="in-band">Crate <a class="mod" href="#">bv</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../clipboard.svg" width="19" height="18" alt="Copy item path"></button></span></h1><span class="out-of-band"><a class="srclink" href="../src/bv/lib.rs.html#1-132">source</a> · <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span></div><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>The main type exported by the library, <a href="struct.BitVec.html"><code>BitVec</code></a>, is a packed,
+growable bit-vector. Its API mirrors that of <code>Vec</code> where reasonable.</p>
+<p>The library also defines slice operations that return
+<a href="struct.BitSlice.html"><code>BitSlice</code></a> or <a href="struct.BitSliceMut.html"><code>BitSliceMut</code></a>, akin to Rust’s array slices but for
+bit-vectors. A common API to bit-vectors and bit-slices is provided by the <a href="trait.Bits.html"><code>Bits</code></a>,
+<a href="trait.BitsMut.html"><code>BitsMut</code></a>, and <a href="trait.BitsPush.html"><code>BitsPush</code></a> traits. These traits also allow treating a variety
+of other types as bit vectors:</p>
+<ul>
+<li>all primitive unsigned integer types (<em>e.g.,</em> <code>u64</code>, <code>u32</code>),</li>
+<li>vectors and slices thereof (<em>e.g.</em>, <code>Vec&lt;usize&gt;</code>, <code>&amp;[u8]</code>, <code>[u16; 4]</code>), and</li>
+<li>unpacked vectors and arrays of <code>bool</code> (<em>e.g.</em>, <code>[bool; 15]</code>).</li>
+</ul>
+<p>Additionally, the <a href="trait.BitsExt.html"><code>BitsExt</code></a> trait provides adapter methods including
+bit-wise logic and concatenation. These adapters work for all types that implement
+<a href="trait.Bits.html"><code>Bits</code></a>.</p>
+<h2 id="examples"><a href="#examples">Examples</a></h2>
+<p>A first example with <a href="struct.BitVec.html"><code>BitVec</code></a>:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use</span> <span class="ident">bv::BitVec</span>;
+
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bv1</span>: <span class="ident">BitVec</span> <span class="op">=</span> <span class="ident">BitVec::new_fill</span>(<span class="bool-val">false</span>, <span class="number">50</span>);
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bv2</span>: <span class="ident">BitVec</span> <span class="op">=</span> <span class="ident">BitVec::new_fill</span>(<span class="bool-val">false</span>, <span class="number">50</span>);
+
+<span class="macro">assert_eq!</span>(<span class="ident">bv1</span>, <span class="ident">bv2</span>);
+
+<span class="ident">bv1</span>.<span class="ident">set</span>(<span class="number">49</span>, <span class="bool-val">true</span>);
+<span class="macro">assert_ne!</span>(<span class="ident">bv1</span>, <span class="ident">bv2</span>);
+
+<span class="macro">assert_eq!</span>(<span class="ident">bv1</span>.<span class="ident">pop</span>(), <span class="prelude-val">Some</span>(<span class="bool-val">true</span>));
+<span class="macro">assert_eq!</span>(<span class="ident">bv2</span>.<span class="ident">pop</span>(), <span class="prelude-val">Some</span>(<span class="bool-val">false</span>));
+<span class="macro">assert_eq!</span>(<span class="ident">bv1</span>, <span class="ident">bv2</span>);</code></pre></div>
+<p>Adapters, from <a href="trait.BitsExt.html"><code>BitsExt</code></a> and <a href="adapter/index.html"><code>adapter</code></a>:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use</span> <span class="ident">bv</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">bv::adapter::BoolAdapter</span>;
+
+<span class="comment">// Here, we use an `&amp;[u16]` as a bit vector, and we adapt a</span>
+<span class="comment">// `Vec&lt;bool&gt;` as well.</span>
+<span class="kw">let</span> <span class="ident">array</span> <span class="op">=</span> <span class="kw-2">&amp;</span>[<span class="number">0b1100u16</span>];
+<span class="kw">let</span> <span class="ident">vec</span>   <span class="op">=</span> <span class="ident">BoolAdapter::new</span>(<span class="macro">vec!</span>[<span class="bool-val">false</span>, <span class="bool-val">true</span>, <span class="bool-val">false</span>, <span class="bool-val">true</span>]);
+
+<span class="comment">// `xor` is not a `BitVec`, but a lazy adapter, thus, we can index</span>
+<span class="comment">// it or efficiently compare it to another bit vector, without</span>
+<span class="comment">// allocating.</span>
+<span class="kw">let</span> <span class="ident">xor</span>   <span class="op">=</span> <span class="ident">array</span>.<span class="ident">bit_xor</span>(<span class="kw-2">&amp;</span><span class="ident">vec</span>);
+<span class="macro">assert_eq!</span>( <span class="ident">xor</span>, <span class="macro">bit_vec!</span>[<span class="bool-val">false</span>, <span class="bool-val">true</span>, <span class="bool-val">true</span>, <span class="bool-val">false</span>] );</code></pre></div>
+<p>This function performs a three-way <em>or</em>, returning a <code>BitVec</code> without
+allocating an intermediate result:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use</span> <span class="ident">bv</span>::{<span class="ident">Bits</span>, <span class="ident">BitsExt</span>, <span class="ident">BitVec</span>};
+
+<span class="kw">fn</span> <span class="ident">three_way_or</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">U</span>, <span class="ident">V</span><span class="op">&gt;</span>(<span class="ident">bv1</span>: <span class="ident">T</span>, <span class="ident">bv2</span>: <span class="ident">U</span>, <span class="ident">bv3</span>: <span class="ident">V</span>) -&gt; <span class="ident">BitVec</span><span class="op">&lt;</span><span class="ident">T::Block</span><span class="op">&gt;</span>
+    <span class="kw">where</span> <span class="ident">T</span>: <span class="ident">Bits</span>,
+          <span class="ident">U</span>: <span class="ident">Bits</span><span class="op">&lt;</span><span class="ident">Block</span> <span class="op">=</span> <span class="ident">T::Block</span><span class="op">&gt;</span>,
+          <span class="ident">V</span>: <span class="ident">Bits</span><span class="op">&lt;</span><span class="ident">Block</span> <span class="op">=</span> <span class="ident">T::Block</span><span class="op">&gt;</span> {
+
+    <span class="ident">bv1</span>.<span class="ident">into_bit_or</span>(<span class="ident">bv2</span>).<span class="ident">into_bit_or</span>(<span class="ident">bv3</span>).<span class="ident">to_bit_vec</span>()
+}</code></pre></div>
+<h2 id="usage"><a href="#usage">Usage</a></h2>
+<p>It’s <a href="https://crates.io/crates/bv">on crates.io</a>, so you can add</p>
+<div class="example-wrap"><pre class="language-toml"><code>[dependencies]
+bv = &quot;0.11.1&quot;</code></pre></div>
+<p>to your <code>Cargo.toml</code> and</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">bv</span>;</code></pre></div>
+<p>to your crate root.</p>
+<p>This crate supports Rust version 1.31 and newer.</p>
+</div></details><h2 id="modules" class="small-section-header"><a href="#modules">Modules</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="mod" href="adapter/index.html" title="bv::adapter mod">adapter</a></div><div class="item-right docblock-short"><p>Lazy bit vector adapters.</p>
+</div></div></div><h2 id="macros" class="small-section-header"><a href="#macros">Macros</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="macro" href="macro.bit_vec.html" title="bv::bit_vec macro">bit_vec</a></div><div class="item-right docblock-short"><p>Like <code>vec!</code> but for <a href="struct.BitVec.html"><code>BitVec</code></a>.</p>
+</div></div></div><h2 id="structs" class="small-section-header"><a href="#structs">Structs</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.BitSlice.html" title="bv::BitSlice struct">BitSlice</a></div><div class="item-right docblock-short"><p>A slice of a bit-vector; akin to <code>&amp;'a [bool]</code> but packed.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.BitSliceMut.html" title="bv::BitSliceMut struct">BitSliceMut</a></div><div class="item-right docblock-short"><p>A mutable slice of a bit-vector; akin to <code>&amp;'a mut [bool]</code> but packed.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.BitVec.html" title="bv::BitVec struct">BitVec</a></div><div class="item-right docblock-short"><p>A bit-vector, akin to <code>Vec&lt;bool&gt;</code> but packed.</p>
+</div></div></div><h2 id="traits" class="small-section-header"><a href="#traits">Traits</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.BitSliceable.html" title="bv::BitSliceable trait">BitSliceable</a></div><div class="item-right docblock-short"><p>Types that support slicing by ranges.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.BitSliceableMut.html" title="bv::BitSliceableMut trait">BitSliceableMut</a></div><div class="item-right docblock-short"><p>Types that produce mutable slices.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.Bits.html" title="bv::Bits trait">Bits</a></div><div class="item-right docblock-short"><p>Read-only bit vector operations.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.BitsExt.html" title="bv::BitsExt trait">BitsExt</a></div><div class="item-right docblock-short"><p>Extension trait for adapter operations on bit slices.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.BitsMut.html" title="bv::BitsMut trait">BitsMut</a></div><div class="item-right docblock-short"><p>Mutable bit vector operations that don’t affect the length.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.BitsMutExt.html" title="bv::BitsMutExt trait">BitsMutExt</a></div><div class="item-right docblock-short"><p>Extension trait for mutable operations on bit slices.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.BitsPush.html" title="bv::BitsPush trait">BitsPush</a></div><div class="item-right docblock-short"><p>Bit vector operations that change the length.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="trait" href="trait.BlockType.html" title="bv::BlockType trait">BlockType</a></div><div class="item-right docblock-short"><p>Interface to primitive bit storage.</p>
+</div></div></div></section></div></main><div id="rustdoc-vars" data-root-path="../" data-current-crate="bv" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0 (4b91a6ea7 2022-08-08)" ></div>
+</body></html>

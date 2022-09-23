@@ -1,29 +1,53 @@
 {
-  "name": "byzantine",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "next": "12.3.1",
-    "next-images": "^1.8.4",
-    "next-themes": "^0.2.1",
-    "react": "18.2.0",
-    "react-dom": "18.2.0"
-  },
-  "devDependencies": {
-    "@types/node": "18.7.18",
-    "@types/react": "18.0.21",
-    "@types/react-dom": "18.0.6",
-    "autoprefixer": "^10.4.12",
-    "eslint": "8.23.1",
-    "eslint-config-next": "12.3.1",
-    "postcss": "^8.4.16",
-    "tailwindcss": "^3.1.8",
-    "typescript": "4.8.3"
-  }
+    "author": {
+        "name": "Alvin Philips",
+        "email": "alvinphilips257@gmail.com",
+        "url": "https://github.com/polarvoid"
+    },
+    "name": "byzantine",
+    "version": "0.1.0",
+    "private": true,
+    "contributors": [
+        {
+            "name": "Ayush Paharia",
+            "url": "https://github.com/ayushpaharia"
+        }
+    ],
+    "license": "MIT",
+    "repository": {
+        "url": "https://github.com/polarvoid/byzantine"
+    },
+    "scripts": {
+        "lint:fix": "prettier */*.js \"*/**/*{.js,.ts}\" -w",
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint"
+    },
+    "dependencies": {
+        "@project-serum/anchor": "^0.25.0",
+        "next": "12.3.1",
+        "next-images": "^1.8.4",
+        "next-themes": "^0.2.1",
+        "react": "18.2.0",
+        "react-dom": "18.2.0"
+    },
+    "devDependencies": {
+        "chai": "^4.3.4",
+        "mocha": "^9.0.3",
+        "ts-mocha": "^10.0.0",
+        "@types/bn.js": "^5.1.0",
+        "@types/chai": "^4.3.0",
+        "@types/mocha": "^9.0.0",
+        "@types/node": "18.7.18",
+        "@types/react": "18.0.21",
+        "@types/react-dom": "18.0.6",
+        "autoprefixer": "^10.4.12",
+        "eslint": "8.23.1",
+        "eslint-config-next": "12.3.1",
+        "postcss": "^8.4.16",
+        "tailwindcss": "^3.1.8",
+        "typescript": "4.8.3",
+        "prettier": "^2.6.2"
+    }
 }
