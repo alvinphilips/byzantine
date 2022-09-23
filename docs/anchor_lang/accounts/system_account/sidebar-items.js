@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":[["SystemAccount","Type validating that the account is owned by the system program"]]};

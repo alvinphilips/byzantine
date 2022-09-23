@@ -1,0 +1,4 @@
+(function() {var implementors = {};
+implementors["solana_program"] = [];
+implementors["spl_token"] = [{"text":"impl <a class=\"trait\" href=\"solana_program/program_error/trait.PrintProgramError.html\" title=\"trait solana_program::program_error::PrintProgramError\">PrintProgramError</a> for <a class=\"enum\" href=\"spl_token/error/enum.TokenError.html\" title=\"enum spl_token::error::TokenError\">TokenError</a>","synthetic":false,"types":["spl_token::error::TokenError"]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

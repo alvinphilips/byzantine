@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":[["BUILTIN_PROGRAMS_KEYS",""],["Message","A Solana transaction message (legacy)."]]};

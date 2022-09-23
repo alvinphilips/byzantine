@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":[["create",""],["get_associated_token_address","Derives the associated token account address for the given wallet address and token mint"]],"static":[["ID","The static program ID"]],"struct":[["AssociatedToken",""],["Create",""]]};

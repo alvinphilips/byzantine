@@ -1,0 +1,102 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Invoke a cross-program instruction."><meta name="keywords" content="rust, rustlang, rust-lang, invoke"><title>invoke in solana_program::program - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="sidebar-items.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc fn"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../solana_program/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../../solana_program/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
+        </a><div class="sidebar-elems"><h2 class="location"><a href="index.html">In solana_program::program</a></h2></div></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../solana_program/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><div id="settings-menu" tabindex="-1">
+                                <a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div>
+                        </div></form></nav></div><section id="main-content" class="content"><div class="main-heading">
+    <h1 class="fqn"><span class="in-band">Function <a href="../index.html">solana_program</a>::<wbr><a href="index.html">program</a>::<wbr><a class="fn" href="#">invoke</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../../clipboard.svg" width="19" height="18" alt="Copy item path"></button></span></h1><span class="out-of-band"><a class="srclink" href="../../src/solana_program/program.rs.html#129-131">source</a> · <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span></div><div class="docblock item-decl"><pre class="rust fn"><code>pub fn invoke(<br>&nbsp;&nbsp;&nbsp;&nbsp;instruction: &amp;<a class="struct" href="../instruction/struct.Instruction.html" title="struct solana_program::instruction::Instruction">Instruction</a>, <br>&nbsp;&nbsp;&nbsp;&nbsp;account_infos: &amp;[<a class="struct" href="../account_info/struct.AccountInfo.html" title="struct solana_program::account_info::AccountInfo">AccountInfo</a>&lt;'_&gt;]<br>) -&gt; <a class="type" href="../entrypoint/type.ProgramResult.html" title="type solana_program::entrypoint::ProgramResult">ProgramResult</a></code></pre></div><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Invoke a cross-program instruction.</p>
+<p>Invoking one program from another program requires an <a href="../instruction/struct.Instruction.html" title="Instruction"><code>Instruction</code></a>
+containing the program ID of the other program, instruction data that
+will be understood by the other program, and a list of <a href="../account_info/struct.AccountInfo.html" title="AccountInfo"><code>AccountInfo</code></a>s
+corresponding to all of the accounts accessed by the other program. Because
+the only way for a program to acquire <code>AccountInfo</code> values is by receiving
+them from the runtime at the [program entrypoint][entrypoint!], any account
+required by the callee program must transitively be required by the caller
+program, and provided by <em>its</em> caller. The same is true of the program ID of
+the called program.</p>
+<p>The <code>Instruction</code> is usually built from within the calling program, but may
+be deserialized from an external source.</p>
+<p>This function will not return if the called program returns anything other
+than success. If the callee returns an error or aborts then the entire
+transaction will immediately fail. To return data as the result of a
+cross-program invocation use the <a href="fn.set_return_data.html" title="set_return_data"><code>set_return_data</code></a> / <a href="fn.get_return_data.html" title="get_return_data"><code>get_return_data</code></a>
+functions, or have the callee write to a dedicated account for that purpose.</p>
+<p>A program may directly call itself recursively, but may not be indirectly
+called recursively (reentered) by another program. Indirect reentrancy will
+cause the transaction to immediately fail.</p>
+<h2 id="validation-of-shared-data-between-programs"><a href="#validation-of-shared-data-between-programs">Validation of shared data between programs</a></h2>
+<p>The <code>AccountInfo</code> structures passed to this function contain data that is
+directly accessed by the runtime and is copied to and from the memory space
+of the called program. Some of that data, the <a href="../account_info/struct.AccountInfo.html#method.lamports" title="AccountInfo::lamports"><code>AccountInfo::lamports</code></a> and
+<a href="../account_info/struct.AccountInfo.html#structfield.data" title="AccountInfo::data"><code>AccountInfo::data</code></a> fields, may be mutated as a side-effect of the called
+program, if that program has writable access to the given account.</p>
+<p>These two fields are stored in <a href="https://doc.rust-lang.org/1.63.0/core/cell/struct.RefCell.html"><code>RefCell</code></a>s to enforce the aliasing
+discipline for mutated values required by the Rust language. Prior to
+invoking the runtime, this routine will test that each <code>RefCell</code> is
+borrowable as required by the callee and return an error if not.</p>
+<p>The CPU cost of these runtime checks can be avoided with the unsafe
+<a href="fn.invoke_unchecked.html" title="invoke_unchecked"><code>invoke_unchecked</code></a> function.</p>
+<h2 id="errors"><a href="#errors">Errors</a></h2>
+<p>If the called program completes successfully and violates no runtime
+invariants, then this function will return successfully. If the callee
+completes and returns a <a href="../program_error/enum.ProgramError.html"><code>ProgramError</code></a>, then the transaction will
+immediately fail. Control will not return to the caller.</p>
+<p>Various runtime invariants are checked before the callee is invoked and
+before returning control to the caller. If any of these invariants are
+violated then the transaction will immediately fail. A non-exhaustive list
+of these invariants includes:</p>
+<ul>
+<li>The sum of lamports owned by all referenced accounts has not changed.</li>
+<li>A program has not debited lamports from an account it does not own.</li>
+<li>A program has not otherwise written to an account that it does not own.</li>
+<li>A program has not written to an account that is not writable.</li>
+<li>The size of account data has not exceeded applicable limits.</li>
+</ul>
+<p>If the invoked program does not exist or is not executable then
+the transaction will immediately fail.</p>
+<p>If any of the <code>RefCell</code>s within the provided <code>AccountInfo</code>s cannot be
+borrowed in accordance with the call’s requirements, an error of
+<a href="../program_error/enum.ProgramError.html#variant.AccountBorrowFailed"><code>ProgramError::AccountBorrowFailed</code></a> is returned.</p>
+<h2 id="examples"><a href="#examples">Examples</a></h2>
+<p>A simple example of transferring lamports via CPI:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use</span> <span class="ident">solana_program</span>::{
+    <span class="ident">account_info</span>::{<span class="ident">next_account_info</span>, <span class="ident">AccountInfo</span>},
+    <span class="ident">entrypoint</span>,
+    <span class="ident">entrypoint::ProgramResult</span>,
+    <span class="ident">program::invoke</span>,
+    <span class="ident">pubkey::Pubkey</span>,
+    <span class="ident">system_instruction</span>,
+    <span class="ident">system_program</span>,
+};
+
+<span class="macro">entrypoint!</span>(<span class="ident">process_instruction</span>);
+
+<span class="kw">fn</span> <span class="ident">process_instruction</span>(
+    <span class="ident">program_id</span>: <span class="kw-2">&amp;</span><span class="ident">Pubkey</span>,
+    <span class="ident">accounts</span>: <span class="kw-2">&amp;</span>[<span class="ident">AccountInfo</span>],
+    <span class="ident">instruction_data</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],
+) -&gt; <span class="ident">ProgramResult</span> {
+    <span class="kw">let</span> <span class="ident">account_info_iter</span> <span class="op">=</span> <span class="kw-2">&amp;mut</span> <span class="ident">accounts</span>.<span class="ident">iter</span>();
+
+    <span class="kw">let</span> <span class="ident">payer</span> <span class="op">=</span> <span class="ident">next_account_info</span>(<span class="ident">account_info_iter</span>)<span class="question-mark">?</span>;
+    <span class="kw">let</span> <span class="ident">recipient</span> <span class="op">=</span> <span class="ident">next_account_info</span>(<span class="ident">account_info_iter</span>)<span class="question-mark">?</span>;
+    <span class="comment">// The system program is a required account to invoke a system</span>
+    <span class="comment">// instruction, even though we don&#39;t use it directly.</span>
+    <span class="kw">let</span> <span class="ident">system_program_account</span> <span class="op">=</span> <span class="ident">next_account_info</span>(<span class="ident">account_info_iter</span>)<span class="question-mark">?</span>;
+
+    <span class="macro">assert!</span>(<span class="ident">payer</span>.<span class="ident">is_writable</span>);
+    <span class="macro">assert!</span>(<span class="ident">payer</span>.<span class="ident">is_signer</span>);
+    <span class="macro">assert!</span>(<span class="ident">recipient</span>.<span class="ident">is_writable</span>);
+    <span class="macro">assert!</span>(<span class="ident">system_program::check_id</span>(<span class="ident">system_program_account</span>.<span class="ident">key</span>));
+
+    <span class="kw">let</span> <span class="ident">lamports</span> <span class="op">=</span> <span class="number">1000000</span>;
+
+    <span class="ident">invoke</span>(
+        <span class="kw-2">&amp;</span><span class="ident">system_instruction::transfer</span>(<span class="ident">payer</span>.<span class="ident">key</span>, <span class="ident">recipient</span>.<span class="ident">key</span>, <span class="ident">lamports</span>),
+        <span class="kw-2">&amp;</span>[<span class="ident">payer</span>.<span class="ident">clone</span>(), <span class="ident">recipient</span>.<span class="ident">clone</span>(), <span class="ident">system_program_account</span>.<span class="ident">clone</span>()],
+    )
+}</code></pre></div>
+</div></details></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="solana_program" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.63.0 (4b91a6ea7 2022-08-08)" ></div>
+</body></html>

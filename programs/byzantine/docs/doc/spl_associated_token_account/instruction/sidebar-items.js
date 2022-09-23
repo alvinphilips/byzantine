@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":[["AssociatedTokenAccountInstruction","Instructions supported by the AssociatedTokenAccount program"]],"fn":[["create_associated_token_account","Creates CreateAssociatedTokenAccount instruction"]]};

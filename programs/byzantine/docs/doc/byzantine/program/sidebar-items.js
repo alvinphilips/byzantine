@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":[["Byzantine","Type representing the program."]]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"attr":[["interface","The `#[interface]` attribute allows one to define an external program dependency, without having any knowledge about the program, other than the fact that it implements the given trait."]]};

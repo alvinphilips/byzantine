@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":[["ParIter","A parallel iterator for `Vector`."],["ParIterMut","A mutable parallel iterator for `Vector`."]]};

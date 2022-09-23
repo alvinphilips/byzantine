@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":[["LAMPORTS_PER_SOL","There are 10^9 lamports in one SOL"]],"fn":[["lamports_to_sol","Approximately convert fractional native tokens (lamports) into native tokens (SOL)"],["sol_to_lamports","Approximately convert native tokens (SOL) into fractional native tokens (lamports)"]],"struct":[["Sol",""]]};

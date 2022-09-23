@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":[["Program","Type validating that the account is the given Program"]]};
