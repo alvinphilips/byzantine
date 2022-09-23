@@ -1,6 +1,9 @@
 # byzantine
 A voting platform that ___doesn't make sense___.
 
+### Read the documentation here
+[byzantine docs](https://polarvoid.github.io/byzantine/byzantine/)
+
 ## Inspiration
 We picked the name **Byzantine** because of the [Byzantine Generals Problem](https://en.wikipedia.org/wiki/Byzantine_fault), and thought it fit well for what we were going for
 
