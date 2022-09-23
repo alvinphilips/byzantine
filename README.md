@@ -1,6 +1,8 @@
 # byzantine
 A voting platform that ___doesn't make sense___.
 
+![Byzantine Sketch](https://github.com/polarvoid/byzantine/blob/main/images/sketch.png?raw=true)
+
 ### Read the documentation here
 [byzantine docs](https://polarvoid.github.io/byzantine/byzantine/)
 
@@ -15,7 +17,7 @@ Byzantine works by holding **rounds**, and you vote for one of the two abstract 
 
 ## Challenges we ran into
 - Managing our time well
-- Figuring out 
+- Figuring out the Solana ecosystem and Anchor
 
 ## Accomplishments that we're proud of
 - Ayush made some really cool whiteboard art
